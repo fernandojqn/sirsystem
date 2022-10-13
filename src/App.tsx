@@ -7,9 +7,9 @@ export const App = () => {
 
   return (
     <div className="App">
-      <AppThemeProvider>
-        <BrowserRouter>
-          <AppRoutes />
+      <AppThemeProvider> {/* todos os temas abraça as paginas*/}
+        <BrowserRouter> {/* instenção do React DOM*/}
+          <AppRoutes /> {/* route/index.tsx */}
         </BrowserRouter>
       </AppThemeProvider>
     </div>
