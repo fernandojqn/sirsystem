@@ -1,11 +1,43 @@
 import { AppRegistrationRounded, ExpandLess, ExpandMore, Laptop, PermDataSetting, StarBorder, Summarize } from "@mui/icons-material";
-import { Box, Collapse, Icon, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, useTheme } from "@mui/material";
+import { Box, Collapse, Icon, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, useMediaQuery, useTheme } from "@mui/material";
+import { on } from "events";
 import React from "react";
-import { useAppThemeContext } from "../../contexts";
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
+import { useAppThemeContext, useDrawerContext } from "../../contexts";
 
+{/* Botões navegaveis */}
+interface IListItemLinkProps {
+    label: string;
+    to: string;
+    onClick: (() => void) | undefined;
+}
+const ListItemLink: React.FC<IListItemLinkProps> = ({ label, to, onClick }) => {
+    const navigate = useNavigate();
+    
+    {/* Marcar botão da pagina */}
+    const resolvedPath = useResolvedPath(to);
+    const match = useMatch({ path: resolvedPath.pathname, end: false});
+    
+    
+    const handleClick = () => {
+        navigate(to);
+        onClick?.();
+    };
+
+    return (
+        <ListItemButton sx={{ pl: 4 }} selected={!!match} onClick={handleClick}>
+                    <ListItemText primary= {label} />
+        </ListItemButton>
+    );
+}
+
+
+{/* Aplicação */}
 export default function MenuLista() {
     const theme = useTheme();
-    const { toggleTheme } = useAppThemeContext();
+    {/* Drawer responsivel */}
+    const{  toggleDrawerOpen } = useDrawerContext();
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [openCadastro, setOpenCadastro] = React.useState(false);
     const handleClickCadastro = () => { setOpenCadastro(!openCadastro); };
@@ -19,6 +51,7 @@ export default function MenuLista() {
     const [openOpcoes, setOpenOpcoes] = React.useState(false);
     const handleClickOpcoes = () => { setOpenOpcoes(!openOpcoes); };
 
+     
     return (
       <Box>
         <List component="nav" >
@@ -35,37 +68,54 @@ export default function MenuLista() {
             
             <List component="div" disablePadding>
                 
-                <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Atividades" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Atividades' 
+                    to ='/pagina-inicial'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Clientes" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Clientes' 
+                    to ='/clientes'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
+                
+                <ListItemLink 
+                    label = 'Empresa' 
+                    to ='/empresa'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
+                
+                <ListItemLink 
+                    label = 'Fornecedores' 
+                    to ='/fornecedores'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
 
-                <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Empresa" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Produtos' 
+                    to ='/produtos'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Fornecedores" />
-                </ListItemButton>
-    
-                <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Produtos" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Usuários' 
+                    to ='/usuarios'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Usuarios" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Vendedores' 
+                    to ='/vendedores'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
+                
+                <ListItemLink 
+                    label = 'Transportadoras' 
+                    to ='/fornecedores'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
 
-                <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Vendedores" />
-                </ListItemButton>
-                
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Transportadores" />
-                </ListItemButton>
             </List>
             </Collapse>
 
@@ -82,18 +132,24 @@ export default function MenuLista() {
             
             <List component="div" disablePadding>
                 
-            <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Entrada de compras" />
-                </ListItemButton>
+            <ListItemLink 
+                    label = 'Entrada de compras' 
+                    to ='/entrada-de-compras'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Pedido de vendas" />
-                </ListItemButton>
-
-                <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Ordem de serviços" />
-                </ListItemButton>
-                   
+                <ListItemLink 
+                    label = 'Pedido de vendas' 
+                    to ='/pedidos-de-vendas'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
+                
+                <ListItemLink 
+                    label = 'Ordem de serviço' 
+                    to ='/ordem-de-serviço'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
+                
             </List>
             </Collapse>
 
@@ -110,23 +166,25 @@ export default function MenuLista() {
             
             <List component="div" disablePadding>
                 
-            <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Eventário de produtos" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Eventário de produtos' 
+                    to ='/eventario-de-produtos'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Extrato de comissões" />
-                </ListItemButton>
-
-                <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Conciliação financeira" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Extrato de comissões' 
+                    to ='/extrato-de-comissoes'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="historioco de pagamentos" />
-                </ListItemButton>
-                    
-            </List>
+                <ListItemLink 
+                    label = 'Conciliação financeira' 
+                    to ='/conciliacao-financeira'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
+                
+             </List>
             </Collapse>
 
             {/* Opções */}
@@ -142,19 +200,24 @@ export default function MenuLista() {
             
             <List component="div" disablePadding>
                 
-            <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="Master" />
-                </ListItemButton>
+            <ListItemLink 
+                    label = 'Master' 
+                    to ='/master'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Mudar senha" />
-                </ListItemButton>
-
-                <ListItemButton sx={{ pl: 4 }} onClick={toggleTheme}>
-                    <ListItemText primary="sobre" />
-                </ListItemButton>
+                <ListItemLink 
+                    label = 'Mudar senha' 
+                    to ='/mudar-senha'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
                 
-                    
+                <ListItemLink 
+                    label = 'Sobre' 
+                    to ='/sobre'
+                    onClick = {smDown ? toggleDrawerOpen : undefined} 
+                />
+                
             </List>
             </Collapse>
 

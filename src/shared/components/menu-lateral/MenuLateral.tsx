@@ -1,5 +1,6 @@
 import { Image, Margin } from "@mui/icons-material";
-import { Avatar, Box, Divider, Drawer, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Divider, Drawer, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useDrawerContext } from "../../contexts";
 import MenuLista from "../menu-lista/MenuLista";
 
 
@@ -10,22 +11,28 @@ interface IMenuLateral {
 //React.fc é um componente funcional, é para quando eu quiser colocar ele dentro de algo, pagina
 export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
     const theme = useTheme();
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+
+    {/* Drawer responsivel */}
+    const{ isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
 
     return(
         <> {/* Fragment, drawer primeiro e o filho que seria a pagina depois, por isso que tem o fragment */}
-            {/* Menu Lateral */}
             
-            <Drawer variant='permanent' >
+            {/* Menu Lateral */}
+            <Drawer open={isDrawerOpen} variant={smDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
                 <Box width={theme.spacing(28)} >
                     
                     <Box width='90%' height={theme.spacing(5)} display='flex' alignItems= 'left' 
                         justifyContent='left' padding={theme.spacing(1)}>
 
-                        {/*  */}
-                        <Avatar sx={{height: theme.spacing(5), width: theme.spacing(5)}} 
-                                src='./../../images/icons/iconSOS.png' /> 
+                        {/* <Avatar alt="L" sx={{height: theme.spacing(5), width: theme.spacing(5)}} 
+                                src='./../../images/icons/iconSOS.jpg' />  */}
+                        <Avatar alt="L" sx={{height: theme.spacing(5), width: theme.spacing(5)}} 
+                                src='./../../images/icons/iconSOS.jpg' /> 
                     
-                    <Divider orientation="vertical" variant="middle" flexItem sx={{ width: theme.spacing(2)}}/>
+                        <Divider orientation="vertical" variant="middle" flexItem sx={{ width: theme.spacing(2)}}/>
+
                         <Box>
                             <Box>
                                 <Typography mt={0} sx={{ width: theme.spacing(10), paddingLeft: theme.spacing(1)}}
@@ -41,7 +48,7 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
                     
                     <Divider  flexItem />    
 
-                    <MenuLista />
+                    <MenuLista />  
                 
                 </Box>
             </Drawer>
