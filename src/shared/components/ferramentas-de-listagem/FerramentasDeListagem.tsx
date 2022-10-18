@@ -1,6 +1,6 @@
 import { Box, Button, Icon, Paper, TextField, useTheme } from "@mui/material"
 
-interface IBarraDeListagemProps {
+interface IFerramentasDeListagemProps {
     //label
     textoDaBusca?: string;
     mostrarInputBusca?: boolean;
@@ -13,7 +13,7 @@ interface IBarraDeListagemProps {
 
 
 
-export const BarraDeListagem: React.FC<IBarraDeListagemProps> = (
+export const FerramentasDeListagem: React.FC<IFerramentasDeListagemProps> = (
     { textoDaBusca = '', mostrarInputBusca = false, aoMudarTextoDaBusca,
     textoDoBotaoNovo='Novo', mostrarBotaoNovo = true, aoClicarNoBotaoNovo}
     ) => {
