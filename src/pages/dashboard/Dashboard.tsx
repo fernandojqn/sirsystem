@@ -1,5 +1,5 @@
 import { LayoutBase } from "../../shared/layouts";
-
+import { BarraDeListagem } from "../../shared/components";
 
 
 export const Dashboard: React.FC = () => {
@@ -7,8 +7,10 @@ export const Dashboard: React.FC = () => {
     return(
         <LayoutBase 
             titulo= 'Página inicial'
-            barraDeFerramentas={<>barraDeFerramentas</>} >
-           Dashboard
+            barraDeFerramentas={(
+                <BarraDeListagem mostrarInputBusca={true} textoDoBotaoNovo={'Novo'}/>
+                )} >
+        DashBoard
         </LayoutBase>
     )
 };

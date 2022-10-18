@@ -2,6 +2,7 @@ import { ForkRight } from "@mui/icons-material";
 import { Avatar, Box, Divider, Icon, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
 import {yellow} from "@mui/material/colors";
 import { ReactNode } from "react";
+import { BarraDeListagem } from "../components";
 import { useDrawerContext } from "../contexts";
 
 interface ILayoutBaseProps {
@@ -32,21 +33,25 @@ export const LayoutBase: React.FC<ILayoutBaseProps> =({children, titulo, barraDe
                     variant={smDown ? 'h6' : 'h5'}
                     overflow="hidden"
                     whiteSpace="nowrap"
-                    textOverflow="ellipsis" > {titulo} </Typography>
+                    textOverflow="ellipsis" > 
+                        {titulo} 
+                </Typography>
 
-                
-                <Divider 
-                
-                orientation="vertical" variant="middle" flexItem />
-                    
-                <Avatar 
+                <Box flex={1} display="flex" gap={1} justifyContent="end"> 
+
+                    <Divider orientation="vertical" variant="middle" flexItem />
+
+                    <Avatar 
                         alt="A" sx={{height: theme.spacing(5), width: theme.spacing(5)}} 
-                        src='./../../images/icons/iconSOS.jpg' />
-                    
+                        src='./../../images/icons/iconSOS.jpg' 
+                    />
+                
+                </Box>
+
             </Box>
                         
             {barraDeFerramentas && 
-                (<Box>
+                (<Box >
                     {barraDeFerramentas}
                 </Box>
             )}
