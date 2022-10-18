@@ -54,8 +54,8 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
             </Drawer>
             
             {/* parte da direita onde vai receber as telas de cadastros */}
-            <Box height='100vh' marginLeft={theme.spacing(28)}>
-            {children}
+            <Box height='100vh' marginLeft={smDown ? 0 : theme.spacing(28)}>
+                {children}
             </Box>
         </>
     );
