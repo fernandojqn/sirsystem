@@ -13,7 +13,7 @@ interface ILayoutBaseProps {
 
 export const LayoutBase: React.FC<ILayoutBaseProps> =({children, titulo, barraDeFerramentas}) => {
     const theme = useTheme();
-    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
     
     const {toggleDrawerOpen} = useDrawerContext();
 
@@ -23,14 +23,14 @@ export const LayoutBase: React.FC<ILayoutBaseProps> =({children, titulo, barraDe
                  height={theme.spacing(3)} >
                 
                 
-                {smDown && (
+                {mdDown && (
                     <IconButton onClick={toggleDrawerOpen}>
                         <Icon> menu </Icon>
                     </IconButton>
                 )}
                 
                 <Typography color={theme.palette.primary.contrastText} 
-                    variant={smDown ? 'h5' : 'h5'}
+                    variant={mdDown ? 'h6' : 'h5'}
                     overflow="hidden"
                     whiteSpace="nowrap"
                     textOverflow="ellipsis"

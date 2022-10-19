@@ -8,7 +8,7 @@ export const Dashboard: React.FC = () => {
         <LayoutBase 
             titulo= 'Página inicial'
             barraDeFerramentas={(
-                <FerramentasDeDetalhes textoBotaoNovo="Novo"/>
+                <FerramentasDeDetalhes textoBotaoNovo="Novo" />
                 )} >
         DashBoard
         </LayoutBase>

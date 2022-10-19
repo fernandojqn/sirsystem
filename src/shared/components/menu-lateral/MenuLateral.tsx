@@ -11,7 +11,7 @@ interface IMenuLateral {
 //React.fc é um componente funcional, é para quando eu quiser colocar ele dentro de algo, pagina
 export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
     const theme = useTheme();
-    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
 
     {/* Drawer responsivel */}
     const{ isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
@@ -20,7 +20,7 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
         <> {/* Fragment, drawer primeiro e o filho que seria a pagina depois, por isso que tem o fragment */}
             
             {/* Menu Lateral */}
-            <Drawer open={isDrawerOpen} variant={smDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
+            <Drawer open={isDrawerOpen} variant={mdDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
                 <Box width={theme.spacing(28)} >
                     
                     <Box width='90%' height={theme.spacing(5)} display='flex' alignItems= 'left' 
@@ -54,7 +54,7 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
             </Drawer>
             
             {/* parte da direita onde vai receber as telas de cadastros */}
-            <Box height='100vh' marginLeft={smDown ? 0 : theme.spacing(28)}>
+            <Box height='100vh' marginLeft={mdDown ? 0 : theme.spacing(28)}>
                 {children}
             </Box>
         </>
