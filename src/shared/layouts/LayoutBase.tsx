@@ -1,9 +1,12 @@
 import { ForkRight } from "@mui/icons-material";
-import { Avatar, Box, Divider, Icon, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Avatar, Box, Divider, Icon, IconButton, Menu, MenuItem, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
 import {yellow} from "@mui/material/colors";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { FerramentasDeListagem } from "../components";
 import { useDrawerContext } from "../contexts";
+
+//configurações usuario
+const settings = ['Conta', 'Mudar Tema', 'Sair'];
 
 interface ILayoutBaseProps {
     children: React.ReactNode;
@@ -14,15 +17,26 @@ interface ILayoutBaseProps {
 export const LayoutBase: React.FC<ILayoutBaseProps> =({children, titulo, barraDeFerramentas}) => {
     const theme = useTheme();
     const mdDown = useMediaQuery(theme.breakpoints.down('md'));
-    
     const {toggleDrawerOpen} = useDrawerContext();
+
+    //Configurações usuario
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    }; 
+         
 
     return (
         <Box  height="100%" display="flex" flexDirection="column" gap={1}>
-            <Box bgcolor={yellow[500]} padding={2} display="flex" alignItems="center" gap={2}
+            <Box bgcolor={theme.palette.primary.main} padding={2} display="flex" alignItems="center" gap={2}
                  height={theme.spacing(3)} >
-                
-                
+                                
                 {mdDown && (
                     <IconButton onClick={toggleDrawerOpen}>
                         <Icon> menu </Icon>
@@ -42,10 +56,34 @@ export const LayoutBase: React.FC<ILayoutBaseProps> =({children, titulo, barraDe
 
                     <Divider orientation="vertical" variant="middle" flexItem />
 
-                    <Avatar 
-                        alt="A" sx={{height: theme.spacing(5), width: theme.spacing(5)}} 
-                        src='./../../images/icons/iconSOS.jpg' 
-                    />
+                    <Tooltip title="Configurações">
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <Avatar alt="Avatar" src="./2.jpg" />
+                        </IconButton>
+                    </Tooltip>
+                
+                    <Menu
+                        sx={{ mt: '45px' }}
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                        >
+                        {settings.map((setting) => (
+                            <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center">{setting}</Typography>
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 
                 </Box>
 

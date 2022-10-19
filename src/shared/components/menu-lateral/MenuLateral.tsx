@@ -28,8 +28,7 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
 
                         {/* <Avatar alt="L" sx={{height: theme.spacing(5), width: theme.spacing(5)}} 
                                 src='./../../images/icons/iconSOS.jpg' />  */}
-                        <Avatar alt="L" sx={{height: theme.spacing(5), width: theme.spacing(5)}} 
-                                src='./../../images/icons/iconSOS.jpg' /> 
+                        <img  src="/sirsystem512.png"/>
                     
                         <Divider orientation="vertical" variant="middle" flexItem sx={{ width: theme.spacing(2)}}/>
 
