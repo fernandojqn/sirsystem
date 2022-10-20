@@ -1,12 +1,9 @@
-import { ForkRight } from "@mui/icons-material";
 import { Avatar, Box, Divider, Icon, IconButton, Menu, MenuItem, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
-import {yellow} from "@mui/material/colors";
 import { ReactNode, useState } from "react";
-import { FerramentasDeListagem } from "../components";
 import { useDrawerContext } from "../contexts";
 
 //configurações usuario
-const settings = ['Conta', 'Mudar Tema', 'Sair'];
+const settings = ['Conta', 'Sobre', 'Sair'];
 
 interface ILayoutBaseProps {
     children: React.ReactNode;
@@ -81,6 +78,7 @@ export const LayoutBase: React.FC<ILayoutBaseProps> =({children, titulo, barraDe
                         {settings.map((setting) => (
                             <MenuItem key={setting} onClick={handleCloseUserMenu}>
                                 <Typography textAlign="center">{setting}</Typography>
+                                <Divider orientation="horizontal" variant="middle" />
                             </MenuItem>
                         ))}
                     </Menu>

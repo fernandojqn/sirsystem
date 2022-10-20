@@ -1,6 +1,6 @@
 import { Image, Margin } from "@mui/icons-material";
-import { Avatar, Box, Divider, Drawer, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useDrawerContext } from "../../contexts";
+import { Avatar, Box, Divider, Drawer, Icon, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useAppThemeContext, useDrawerContext } from "../../contexts";
 import MenuLista from "../menu-lista/MenuLista";
 
 
@@ -12,6 +12,7 @@ interface IMenuLateral {
 export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
     const theme = useTheme();
     const mdDown = useMediaQuery(theme.breakpoints.down('md'));
+    const { toggleTheme } = useAppThemeContext();
 
     {/* Drawer responsivel */}
     const{ isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
@@ -21,7 +22,7 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
             
             {/* Menu Lateral */}
             <Drawer open={isDrawerOpen} variant={mdDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
-                <Box width={theme.spacing(28)} >
+                <Box width={theme.spacing(28)} height="100%">
                     
                     <Box width='90%' height={theme.spacing(5)} display='flex' alignItems= 'left' 
                         justifyContent='left' padding={theme.spacing(1)}>
@@ -46,9 +47,24 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
                     </Box>
                     
                     <Divider  flexItem />    
+                    
+                    <Box  height="93%" display="flex" flexDirection="column">
+                        <Box flex={1}>
+                            <MenuLista />  
+                        </Box>
+                        
+                        <Divider  flexItem /> 
 
-                    <MenuLista />  
-                
+                        <Box >
+                            <ListItemButton onClick={toggleTheme}>
+                                    <ListItemIcon>
+                                        <Icon>dark_mode</Icon>
+                                    </ListItemIcon>
+                                <ListItemText primary="Alternar tema" />
+                            </ListItemButton>
+                        </Box>
+                    </Box>
+
                 </Box>
             </Drawer>
             

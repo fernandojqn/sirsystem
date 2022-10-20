@@ -187,40 +187,6 @@ export default function MenuLista() {
              </List>
             </Collapse>
 
-            {/* Opções */}
-            <ListItemButton onClick={handleClickOpcoes}>
-                <ListItemIcon >
-                    <PermDataSetting />
-                </ListItemIcon>
-                <ListItemText primary="Opções" />
-                {openOpcoes ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            
-            <Collapse in={openOpcoes} timeout="auto" unmountOnExit>
-            
-            <List component="div" disablePadding>
-                
-            <ListItemLink 
-                    label = 'Master' 
-                    to ='/master'
-                    onClick = {smDown ? toggleDrawerOpen : undefined} 
-                />
-                
-                <ListItemLink 
-                    label = 'Mudar senha' 
-                    to ='/mudar-senha'
-                    onClick = {smDown ? toggleDrawerOpen : undefined} 
-                />
-                
-                <ListItemLink 
-                    label = 'Sobre' 
-                    to ='/sobre'
-                    onClick = {smDown ? toggleDrawerOpen : undefined} 
-                />
-                
-            </List>
-            </Collapse>
-
         </List>
       </Box>
     );
