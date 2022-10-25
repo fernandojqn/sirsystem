@@ -6,14 +6,14 @@ export const LightTheme = createTheme ({
     palette: {
         primary: {
             main: amber[400],
-            light: amber[600],
-            dark: amber[800],
+            light: amber[200],
+            dark: amber[600],
             contrastText: '#ffffff'
         },
         secondary: {
-          main: yellow[700],
-          dark: yellow[900],
-          light: yellow[500],
+          main: yellow[500],
+          dark: yellow[700],
+          light: yellow[300],
           contrastText: '#ffffff',
         },
         background: {

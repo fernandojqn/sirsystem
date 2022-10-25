@@ -48,14 +48,15 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
                     
                     <Divider  flexItem />    
                     
-                    <Box  height="93%" display="flex" flexDirection="column">
-                        <Box flex={1}>
+                    <Box  height="90%" display="flex" flexDirection="column"
+                     >
+                        <Box flex={1} overflow="auto">
                             <MenuLista />  
                         </Box>
                         
                         <Divider  flexItem /> 
 
-                        <Box >
+                        <Box overflow="auto">
                             <ListItemButton onClick={toggleTheme}>
                                     <ListItemIcon>
                                         <Icon>dark_mode</Icon>
@@ -69,7 +70,8 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
             </Drawer>
             
             {/* parte da direita onde vai receber as telas de cadastros */}
-            <Box height='100vh' marginLeft={mdDown ? 0 : theme.spacing(28)}>
+            <Box height='100vh' marginLeft={mdDown ? 0 : theme.spacing(28)}
+            >
                 {children}
             </Box>
         </>

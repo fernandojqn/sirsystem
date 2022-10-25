@@ -1,10 +1,93 @@
 {
     "clientes": [
         {"id": 1,
-        "nome": "Fernando",
-        "idade": 40},
+        "nome": "Fernando José Quatis Nunes",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
         {"id": 2,
-        "nome": "Fernando",
-        "idade": 40}
+        "nome": "Cleusa",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 3,
+        "nome": "Holly",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 4,
+        "nome": "Sidney",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 5,
+        "nome": "Stephany",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 6,
+        "nome": "Felipe",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 7,
+        "nome": "Frederico",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 8,
+        "nome": "Cibele",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 9,
+        "nome": "Camile",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },{"id": 10,
+        "nome": "Lucas",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 11,
+        "nome": "Romeu",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 12,
+        "nome": "Leopoldo",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 13,
+        "nome": "Tonico",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 14,
+        "nome": "Andre",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 15,
+        "nome": "pedro",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 16,
+        "nome": "Paulo",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 17,
+        "nome": "Leandro",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        },
+        {"id": 18,
+        "nome": "Leonardo",
+        "cidade": 1,
+        "email": "fernandojqnunes@gmail.com"
+        }
     ]
 }

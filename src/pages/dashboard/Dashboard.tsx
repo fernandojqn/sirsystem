@@ -7,10 +7,8 @@ export const Dashboard: React.FC = () => {
     return(
         <LayoutBase 
             titulo= 'Página inicial'
-            barraDeFerramentas={(
-                <FerramentasDeDetalhes textoBotaoNovo="Novo" />
-                )} >
-        DashBoard
+        >
+        
         </LayoutBase>
     )
 };

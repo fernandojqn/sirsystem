@@ -93,6 +93,7 @@ export const LayoutBase: React.FC<ILayoutBaseProps> =({children, titulo, barraDe
                 </Box>
             )}
 
+            
             <Box flex={1} overflow="auto">
                 {children}
             </Box>
