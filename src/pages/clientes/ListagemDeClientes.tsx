@@ -1,6 +1,6 @@
-import { LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
+import { Icon, IconButton, LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { FerramentasDeListagem } from "../../shared/components"
 import { Environment } from "../../shared/enviroments";
 import { useDebounce } from "../../shared/hooks";
@@ -16,6 +16,8 @@ export const ListagemDeClientes: React.FC = () => {
     const[searchParams, setSearchParams] = useSearchParams();
     // delay na escrita
     const { debounce } = useDebounce(500, true); //tempo do delay e notDelayInFirstTime
+    // Navegar detalhe clientes
+    const navigate = useNavigate();
 
     //Lista
     const [rows, setRows] = useState<IListagemClientes[]>([]); // guardar as informações da consulta
@@ -54,7 +56,8 @@ export const ListagemDeClientes: React.FC = () => {
         <LayoutBase 
             titulo= 'Listagem de Clientes'
             barraDeFerramentas={(
-                <FerramentasDeListagem 
+                <FerramentasDeListagem
+                aoClicarNoBotaoNovo={() => navigate('/clientes/detalhesDeClientes/novo')} 
                 mostrarInputBusca 
                 textoDaBusca={busca}
                 aoMudarTextoDaBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace: true})}/>
@@ -74,7 +77,12 @@ export const ListagemDeClientes: React.FC = () => {
                     <TableBody>
                         {rows.map(row => (
                             <TableRow key={row.id}>
-                            <TableCell>Ações</TableCell>
+                            <TableCell>
+                               <IconButton size = "small" onClick={() => navigate(`/clientes/detalhesDeClientes/${row.id}`)}> 
+                                <Icon> edit </Icon>
+                               </IconButton>
+                            </TableCell>
+
                             <TableCell>{row.nome}</TableCell>
                             <TableCell>{row.email}</TableCell>
                         </TableRow>
@@ -98,13 +106,18 @@ export const ListagemDeClientes: React.FC = () => {
                         {/* Paginação */}
                         {(!isLoading && totalCount > Environment.LIMITE_DE_LINHAS) && (
                             <TableRow>
-                                <TableCell colSpan={3}>
+                                <TableCell colSpan={2}>
                                     <Pagination 
                                         page={pagina}
                                         count={Math.ceil(totalCount / Environment.LIMITE_DE_LINHAS)}
                                         onChange={(_, newPage) => setSearchParams({busca, pagina: newPage.toString()}, {replace: true})}
                                         />
-                                    </TableCell>    
+                                </TableCell>    
+
+                                <TableCell colSpan={1} align="right">
+                                    Registros Encontrados: {totalCount}
+                                 </TableCell>    
+
                             </TableRow>
                         )}                        
                     </TableFooter>
@@ -112,5 +125,4 @@ export const ListagemDeClientes: React.FC = () => {
             </TableContainer>
         </LayoutBase>
     )
-    
 }

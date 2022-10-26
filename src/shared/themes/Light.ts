@@ -1,13 +1,27 @@
 import { createTheme } from "@mui/material";
 import { yellow, amber } from "@mui/material/colors";
 
+/**
+ * #16140E preto
+ * 
+ * #D807BA cinza claro
+ * #C4C2AE cinza escuro
+ * 
+ * #FFC61D amarelo
+ * #E5AC1C amarelo 2
+ * #C1930C amarelo 3
+ * #A5790C amarelo 4
+ * 
+ * #FFC61D #A5790C gradiente claro
+ * #FBBF5E #1614DE gradiente escuro
+ */
 
 export const LightTheme = createTheme ({
     palette: {
         primary: {
-            main: amber[400],
-            light: amber[200],
-            dark: amber[600],
+            main: '#E5AC1C',
+            light: '#FFC61D',
+            dark: '#C1930C',
             contrastText: '#ffffff'
         },
         secondary: {
@@ -21,4 +35,5 @@ export const LightTheme = createTheme ({
             default: '#f7f6f3'
         }
     }
+    
 })

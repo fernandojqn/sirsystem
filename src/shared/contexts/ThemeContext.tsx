@@ -3,10 +3,12 @@ import { ThemeProvider } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { DarkTheme, LightTheme } from './../themes';
+import { DarkMode } from '@mui/icons-material';
 
 // Quais propriedades estou compartilhando no contexto
 interface IThemeContextData {
   themeName: 'light' | 'dark';
+  
   toggleTheme: () => void; //auternar o temas
 }
 
@@ -25,11 +27,13 @@ interface IAppThemeProviderProps {
 
 
 export const AppThemeProvider: React.FC<IAppThemeProviderProps> = ({ children }) => {
-  const [themeName, setThemeName] = useState<'light' | 'dark'>('light'); 
+  const [themeName, setThemeName] = useState<'light' | 'dark'>('light');
+   
 
   //muda na memoria
   const toggleTheme = useCallback(() => {
     setThemeName(oldThemeName => oldThemeName === 'light' ? 'dark' : 'light');
+    
   }, []);
 
   //oque está na memoria o light ou back
@@ -40,7 +44,7 @@ export const AppThemeProvider: React.FC<IAppThemeProviderProps> = ({ children })
 
 
   return (
-    <ThemeContext.Provider value={{ themeName, toggleTheme }}> {/* toggleTheme ativa a função do usecallback*/}
+    <ThemeContext.Provider value={{ themeName,  toggleTheme }}> {/* toggleTheme ativa a função do usecallback*/}
       <ThemeProvider theme={theme}> {/* vai ler o que está na memoria*/}
         <Box width="100vw" height="100vh" bgcolor={theme.palette.background.default}>{/*a box vai fazer eu usar o 100% da tela*/}
           {children}
