@@ -70,7 +70,7 @@ const create = async (dados: Omit<IDetalhesCliente, 'id'>): Promise<number | Err
             return data.id; // A resposta vai ser só o ID pois já tenho todas as informações
         }
 
-        return new Error('erro ao criar registro Cliente')
+        return new Error('erro ao criar registro de Cliente')
 
     } catch (error) {
         console.error(error);
@@ -80,28 +80,21 @@ const create = async (dados: Omit<IDetalhesCliente, 'id'>): Promise<number | Err
 
 const updateById = async (id: number, dados: IDetalhesCliente): Promise<void | Error> => {
     try {
-        const { data } = await Api.put<IDetalhesCliente>(`/clientes/${id}`, dados);
-        
-        return new Error('erro ao atualizar registro Cliente')
-
+      await Api.put(`/clientes/${id}`, dados);
     } catch (error) {
-        console.error(error);
-        return new Error((error as {message: string}).message || 'erro ao atualizar registro Cliente') 
+      console.error(error);
+      return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
     }
-}
+  };
 
-const deleteById = async (id: number): Promise<any> => {
+const deleteById = async (id: number): Promise<void | Error> => {
     try {
-        const { data } = await Api.delete<IDetalhesCliente>(`/clientes/${id}`);
-        
-        return new Error('erro ao deletar registro Cliente')
-
+        await Api.delete(`/clientes/${id}`);
     } catch (error) {
         console.error(error);
-        return new Error((error as {message: string}).message || 'erro ao deletar registro Cliente') 
+        return new Error((error as {message: string}).message || 'erro ao deletar registro.') 
     }
 }
-
 
 export const ClientesServices = {
     getAll, getById, create, updateById, deleteById
