@@ -8,9 +8,9 @@
     },
     {
       "id": 2,
-      "nome": "Cleusa",
-      "cidade": 1,
-      "email": "fernandojqnunes@gmail.com"
+      "nome": "Cleusa Cominato",
+      "email": "fernandojqnunes@gmail.com",
+      "cidade": 1
     },
     {
       "id": 4,
@@ -119,6 +119,12 @@
       "nome": "Paulo Henrique",
       "email": "paulo@gmail.com",
       "cidade": "2"
+    },
+    {
+      "nome": "Eduardo",
+      "email": "edu@gmauil.com",
+      "cidade": "2",
+      "id": 24
     }
   ]
 }
