@@ -4,14 +4,20 @@ import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
-import { VTextField, VForm, useVForm } from "../../shared/forms";
-
+import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
+import * as yup from 'yup';
 
 interface IFormData {
     nome: string;
     email: string;
     cidadeId: number;
 }
+
+const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+    nome: yup.string().required().min(3), //.default(João)  .required('Campo é obrigatorio').min(3, 'tem que....),
+    email: yup.string().required().email(),
+    cidadeId: yup.number().required()
+});
 
 export const DetalhesDeClientes: React.FC = () => {
     // passar o submit para o botão salvar  
@@ -49,39 +55,64 @@ export const DetalhesDeClientes: React.FC = () => {
     }, [id]);
 
     const handleSave = (dados: IFormData) => {
-        setIsLoading(true)
-        if (id === 'novo') {
-            ClientesServices.create(dados)
-            .then((result) => {
-                setIsLoading(false)
+        
+        //validação
+        formValidationSchema.
+            validate(dados, {abortEarly: false}) //abortEarly:false valida todos os campos
+            .then((dadosValidados) => {
+                
+                setIsLoading(true)
 
-                if (result instanceof Error ) {
-                    alert(result.message);
-                } else {
-                    if (isSaveAndClose()) {
-                        navigate('/clientes');   
-                    } else {
-                        navigate(`/clientes/detalhesDeClientes/${result}`);   
-                    }
-                    
+                if (id === 'novo') {
+                    ClientesServices.create(dadosValidados)
+                    .then((result) => {
+                        setIsLoading(false)
+
+                        if (result instanceof Error ) {
+                            alert(result.message);
+                        } else {
+                            if (isSaveAndClose()) {
+                                navigate('/clientes');   
+                            } else {
+                                navigate(`/clientes/detalhesDeClientes/${result}`);   
+                            }
+                            
+                        }
+                    })
+                }
+                else {
+                    ClientesServices.updateById(Number(id), {id: Number(id), ...dadosValidados})
+                    .then((result) => {
+                        setIsLoading(false)
+                        
+                        if (result instanceof Error ) {
+                            alert(result.message);
+                        } else {
+                            setNome(dados.nome);
+                            if (isSaveAndClose()) {
+                                navigate('/clientes');   
+                            }
+                        }
+                    });
                 }
             })
-        }
-        else {
-            ClientesServices.updateById(Number(id), {id: Number(id), ...dados})
-            .then((result) => {
-                setIsLoading(false)
-                
-                if (result instanceof Error ) {
-                    alert(result.message);
-                } else {
-                    setNome(dados.nome);
-                    if (isSaveAndClose()) {
-                        navigate('/clientes');   
-                    }
-                }
-            });
-        }
+
+            .catch ((errors: yup.ValidationError) => {
+                const validationErrors: IVFormErrors = {};
+
+                errors.inner.forEach(error => {
+                    if(!error.path) return;
+
+                    validationErrors[error.path] = error.message;
+
+                });
+
+                console.log(validationErrors)
+
+                formRef.current?.setErrors(validationErrors); // escrever texto especifico {nome: 'Precisa', email: 'necessita'}
+            })
+
+        
     };
 
 
@@ -121,7 +152,7 @@ export const DetalhesDeClientes: React.FC = () => {
         
         {/* Formulario*/}
             <VForm ref={formRef} onSubmit= {handleSave}>
-                
+
                 <Box margin={1} display= 'flex' flexDirection='column' component={Paper} variant= 'outlined'>
                 
                     <Grid container direction="column" padding={2} spacing={2}>
