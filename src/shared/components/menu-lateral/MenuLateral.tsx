@@ -1,17 +1,14 @@
-import { Image, Margin } from "@mui/icons-material";
-import { Avatar, Box, Divider, Drawer, Icon, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { link } from "fs";
-import { useState } from "react";
+import { Box, Divider, Drawer, Icon, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useAppThemeContext, useDrawerContext } from "../../contexts";
 import MenuLista from "./MenuLista";
 
 
-interface IMenuLateral {
+interface IMenuLateralProps {
     children: React.ReactNode
 }
 
 //React.fc é um componente funcional, é para quando eu quiser colocar ele dentro de algo, pagina
-export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
+export const MenuLateral: React.FC<IMenuLateralProps> = ({children}) => {
     const theme = useTheme();
     const mdDown = useMediaQuery(theme.breakpoints.down('md'));
     const { toggleTheme } = useAppThemeContext();
@@ -28,8 +25,8 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
             <Drawer open={isDrawerOpen} variant={mdDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
                 <Box width={theme.spacing(28)} height="100%" >
                     
-                    <Box width='93%' bgcolor={theme.palette.primary.main} height={theme.spacing(5)} display='flex' alignItems= 'left' 
-                        justifyContent='left' padding={theme.spacing(1)}>
+                    <Box width='93%' bgcolor={theme.palette.primary.main} height={theme.spacing(5)} display='flex' 
+                    alignItems= 'left' justifyContent='left' padding={theme.spacing(1)}>
 
                         
                         <img  src="/sirsystem512.png"/>
@@ -38,13 +35,15 @@ export const MenuLateral: React.FC<IMenuLateral> = ({children}) => {
 
                         <Box>
                             <Box>
-                                <Typography mt={0} sx={{ width: theme.spacing(10), paddingLeft: theme.spacing(1)}}
-                                ><strong>Sir System</strong></Typography>
+                                <Typography color={'white'} mt={0} sx={{ width: theme.spacing(10), paddingLeft: theme.spacing(1)}} >
+                                    <strong>Sir System</strong>
+                                </Typography>
                             </Box>
 
                             <Box>
-                                <Typography sx={{ width: theme.spacing(13), paddingLeft: theme.spacing(1)}}
-                                >version: 0.1.2</Typography>
+                                <Typography color={'white'} sx={{ width: theme.spacing(13), paddingLeft: theme.spacing(1)}} >
+                                    version: 0.1.2
+                                </Typography>
                             </Box>
                         </Box>
                     </Box>

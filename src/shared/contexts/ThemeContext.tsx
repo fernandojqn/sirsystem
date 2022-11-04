@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { DarkTheme, LightTheme } from './../themes';
-import { DarkMode } from '@mui/icons-material';
+
 
 // Quais propriedades estou compartilhando no contexto
 interface IThemeContextData {

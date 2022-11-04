@@ -1,4 +1,4 @@
-import { Box,  Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box,  Button,  Checkbox,  Grid, Icon, LinearProgress, ListItemIcon, Paper, Typography } from "@mui/material";
 import { useEffect,  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
@@ -6,18 +6,25 @@ import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
 import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import * as yup from 'yup';
+import { ExpandMore, Search } from "@mui/icons-material";
+import ClienteForm from "../../shared/forms/cliente-form/ClienteForm";
 
 interface IFormData {
-    nome: string;
-    email: string;
-    cidadeId: number;
+    sufixo: string; 
+    nome: string; 
+    email: string; 
 }
 
+
+
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+    sufixo: yup.string().required().min(3),
     nome: yup.string().required().min(3), //.default(João)  .required('Campo é obrigatorio').min(3, 'tem que....),
-    email: yup.string().required().email(),
-    cidadeId: yup.number().required()
+    email: yup.string().email().required()
+
+    
 });
+
 
 export const DetalhesDeClientes: React.FC = () => {
     // passar o submit para o botão salvar  
@@ -25,7 +32,7 @@ export const DetalhesDeClientes: React.FC = () => {
     const navigate = useNavigate();
     const { id = 'novo' } = useParams<'id'>();
     const [isLoading, setIsLoading] = useState(false);
-    const [nome, setNome] = useState('');
+    const [sufixo, setSufixo] = useState('');
     
 
     //trazer dados do cliente
@@ -41,7 +48,7 @@ export const DetalhesDeClientes: React.FC = () => {
                     alert(result.message);
                     navigate('/clientes');
                 } else {
-                    setNome(result.nome);
+                    setSufixo(result.nome);
                     formRef.current?.setData(result);
                 }
             });
@@ -49,7 +56,7 @@ export const DetalhesDeClientes: React.FC = () => {
             formRef.current?.setData({
                 nome: '',
                 email: '',
-                cidade: ''
+                
             });
         }
     }, [id]);
@@ -88,7 +95,7 @@ export const DetalhesDeClientes: React.FC = () => {
                         if (result instanceof Error ) {
                             alert(result.message);
                         } else {
-                            setNome(dados.nome);
+                            setSufixo(dados.nome);
                             if (isSaveAndClose()) {
                                 navigate('/clientes');   
                             }
@@ -111,11 +118,7 @@ export const DetalhesDeClientes: React.FC = () => {
 
                 formRef.current?.setErrors(validationErrors); // escrever texto especifico {nome: 'Precisa', email: 'necessita'}
             })
-
-        
     };
-
-
 
     const handleDelete = (id: number) => {
                          
@@ -132,11 +135,10 @@ export const DetalhesDeClientes: React.FC = () => {
         
       };
 
-    
 
     return(
         <LayoutBase 
-            titulo= {id === 'novo' ? 'Novo cliente' : nome}
+            titulo= {id === 'novo' ? 'Novo cliente' : sufixo}
             barraDeFerramentas = {<FerramentasDeDetalhes 
                 mostrarBotaoNovo = {id !== 'novo'}
                 mostrarBotaoApagar = {id !== 'novo'}
@@ -148,50 +150,9 @@ export const DetalhesDeClientes: React.FC = () => {
                 aoClicarBotaoVoltar = {() => navigate('/clientes')}
         />}>
         
-       
-        
         {/* Formulario*/}
-            <VForm ref={formRef} onSubmit= {handleSave}>
-
-                <Box margin={1} display= 'flex' flexDirection='column' component={Paper} variant= 'outlined'>
-                
-                    <Grid container direction="column" padding={2} spacing={2}>
-
-                        {isLoading && (
-                            <Grid item>
-                        <LinearProgress variant='indeterminate' />
-                            </Grid>
-                        )}
-                        
-                        <Grid item>
-                            <Typography variant="h5">
-                                Geral
-                            </Typography>
-                        </Grid>
-
-                        <Grid container item direction="row" spacing={2}>
-                            <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                                <VTextField fullWidth label="nome" placeholder="Nome" name='nome' disabled={isLoading}/> {/* onChange = {e=> setNome(e.target.value)}*/}
-                            </Grid>
-                            
-                        </Grid>
-                
-                        <Grid container item direction="row" spacing={2}>
-                            <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                                <VTextField fullWidth label="E-mail" placeholder="Email" name='email' disabled={isLoading}/>
-                            </Grid>
-                        </Grid>
-
-                        <Grid container item direction="row" spacing={2}>
-                            <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                                <VTextField fullWidth label="Cidade" placeholder="Cidade" name='cidade' disabled={isLoading}/>
-                            </Grid>
-                        </Grid>
-
-                    </Grid>
-                
-                </Box>
-                   
+            <VForm ref={formRef} onSubmit= {handleSave} >
+                <ClienteForm/>
             </VForm>
          </LayoutBase>
     )        

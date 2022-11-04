@@ -1,9 +1,8 @@
 import { AppRegistrationRounded, ExpandLess, ExpandMore, Laptop, PermDataSetting, StarBorder, Summarize } from "@mui/icons-material";
 import { Box, Collapse, Icon, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, useMediaQuery, useTheme } from "@mui/material";
-import { on } from "events";
 import React from "react";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
-import { useAppThemeContext, useDrawerContext } from "../../contexts";
+import { useDrawerContext } from "../../contexts";
 
 {/* Botões navegaveis */}
 interface IListItemLinkProps {
@@ -26,7 +25,7 @@ const ListItemLink: React.FC<IListItemLinkProps> = ({ label, to, onClick }) => {
 
     return (
         <ListItemButton sx={{ pl: 4 }} selected={!!match} onClick={handleClick}>
-                    <ListItemText primary= {label} />
+            <ListItemText primary= {label} />
         </ListItemButton>
     );
 }
@@ -186,7 +185,6 @@ export default function MenuLista() {
                 
              </List>
             </Collapse>
-
         </List>
       </Box>
     );

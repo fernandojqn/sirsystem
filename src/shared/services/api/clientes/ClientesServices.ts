@@ -3,16 +3,18 @@ import { Environment } from "../../../enviroments";
 
 export interface IListagemClientes {
     id: number;
+    sufixo: string;
     nome: string;
-    cidadeId: number;
     email: string;
+    
 }
 
 export interface IDetalhesCliente {
-    id: number;
-    nome: string;
-    cidadeId: number;
+    id: number; 
+    sufixo: string; 
+    nome: string; 
     email: string;
+    
 }
 
 type TClientesComTotalCount = {

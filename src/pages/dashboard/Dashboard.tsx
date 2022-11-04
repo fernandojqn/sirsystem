@@ -1,5 +1,4 @@
 import { LayoutBase } from "../../shared/layouts";
-import { FerramentasDeDetalhes } from "../../shared/components";
 
 
 export const Dashboard: React.FC = () => {
