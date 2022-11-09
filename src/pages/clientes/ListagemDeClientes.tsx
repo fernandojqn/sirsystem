@@ -68,9 +68,10 @@ export const ListagemDeClientes: React.FC = () => {
                 <Table>
                     <TableHead> 
                         <TableRow>
-                            <TableCell>Ações</TableCell>
-                            <TableCell>Nomes</TableCell>
-                            <TableCell>Email</TableCell>
+                            <TableCell width={40}>Ações</TableCell>
+                            <TableCell width={250}>Sufixo</TableCell>
+                            <TableCell width={250}>Nomes</TableCell>
+                            
                         </TableRow>
                     </TableHead>
 
@@ -82,9 +83,9 @@ export const ListagemDeClientes: React.FC = () => {
                                 <Icon> edit </Icon>
                                </IconButton>
                             </TableCell>
-
+                            <TableCell>{row.sufixo}</TableCell>
                             <TableCell>{row.nome}</TableCell>
-                            <TableCell>{row.email}</TableCell>
+                            
                         </TableRow>
                         ))}
                     </TableBody>

@@ -2,9 +2,11 @@
   "clientes": [
     {
       "id": 1,
+      "sufixo": "FJQN",
       "nome": "Fernando José Quatis Nunes",
-      "cidade": 1,
-      "email": "fernandojqnunes@gmail.com"
+      "documento": "31195039832",
+      "inscricao": "259946722",
+      "ccm": "147258"
     },
     {
       "id": 2,

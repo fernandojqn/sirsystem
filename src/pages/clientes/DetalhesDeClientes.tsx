@@ -1,28 +1,29 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box,  Button,  Checkbox,  Grid, Icon, LinearProgress, ListItemIcon, Paper, Typography } from "@mui/material";
 import { useEffect,  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
-import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
+import { VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import * as yup from 'yup';
-import { ExpandMore, Search } from "@mui/icons-material";
 import ClienteForm from "../../shared/forms/cliente-form/ClienteForm";
 
+
 interface IFormData {
-    sufixo: string; 
-    nome: string; 
-    email: string; 
+    sufixo: string;
+    nome: string;
+    documento: string;
+    inscricao: string;
+    ccm: string;
 }
 
 
 
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     sufixo: yup.string().required().min(3),
-    nome: yup.string().required().min(3), //.default(João)  .required('Campo é obrigatorio').min(3, 'tem que....),
-    email: yup.string().email().required()
-
-    
+    nome: yup.string().notRequired().default(''), 
+    documento: yup.string().notRequired().default(''),
+    inscricao: yup.string().notRequired().default(''),
+    ccm: yup.string().notRequired().default(''),
 });
 
 
@@ -48,7 +49,7 @@ export const DetalhesDeClientes: React.FC = () => {
                     alert(result.message);
                     navigate('/clientes');
                 } else {
-                    setSufixo(result.nome);
+                    setSufixo(result.sufixo);
                     formRef.current?.setData(result);
                 }
             });
@@ -95,7 +96,7 @@ export const DetalhesDeClientes: React.FC = () => {
                         if (result instanceof Error ) {
                             alert(result.message);
                         } else {
-                            setSufixo(dados.nome);
+                            setSufixo(dados.sufixo);
                             if (isSaveAndClose()) {
                                 navigate('/clientes');   
                             }

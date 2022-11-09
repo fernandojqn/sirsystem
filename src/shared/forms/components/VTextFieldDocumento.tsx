@@ -2,16 +2,19 @@ import { TextField, TextFieldProps } from "@mui/material";
 
 import { useField } from "@unform/core";
 import { useEffect, useState } from "react";
-
+import CpfCnpj from "@react-br-forms/cpf-cnpj-mask";
 
 type TVTextFieldCnpjCpfProps = TextFieldProps & {
     name: string;
 }
 
-export const VTextFieldCnpjCpf: React.FC<TVTextFieldCnpjCpfProps> = ({name, ...rest}) => {
+export const VTextFieldDocumento: React.FC<TVTextFieldCnpjCpfProps> = ({name, ...rest}) => {
     const {fieldName, registerField, defaultValue, error, clearError} = useField(name); 
 
     const[value, setValue] =useState(defaultValue || '');
+
+    const [cpfCnpj, setCpfCnpj] = useState("");
+    const [mask, setMask] = useState("");
 
     useEffect(() => {
         registerField({
@@ -23,7 +26,7 @@ export const VTextFieldCnpjCpf: React.FC<TVTextFieldCnpjCpfProps> = ({name, ...r
 
 
     return (
-        <TextField 
+        <CpfCnpj 
             {...rest}
 
             error = {!!error}
@@ -31,9 +34,11 @@ export const VTextFieldCnpjCpf: React.FC<TVTextFieldCnpjCpfProps> = ({name, ...r
             defaultValue={defaultValue}
             value ={value}
             
-            onKeyDown={(e) => {error && clearError(); rest.onKeyDown?.(e)}}
-            onChange = {e => {setValue(e.target.value); rest.onChange?.(e)}}
+            
 
         />
     );
 };
+
+//onKeyDown={(e) => {error && clearError(); rest.onKeyDown?.(e)}}
+//onChange = {e => {setValue(e.target.value); rest.onChange?.(e)}}

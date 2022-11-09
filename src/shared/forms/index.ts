@@ -9,5 +9,4 @@ export * from './cliente-form/ClienteForm'
 
 //Labels
 export * from './components/VTextField'
-export * from './components/VTextFieldCnpjCpf'
-export * from './components/VAutoCompleteUF'
+export * from './components/VTextFieldDocumento'
