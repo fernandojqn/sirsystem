@@ -1,20 +1,21 @@
 import { TextField, TextFieldProps } from "@mui/material";
-
 import { useField } from "@unform/core";
-import { validateHeaderValue } from "http";
 import { useEffect, useState } from "react";
 
 
-type TVTextFieldCnpjCpfProps = TextFieldProps & {
+
+
+
+type TVTextFieldProps = TextFieldProps & {
     name: string;
+    
 }
 
-export const VTextFieldDocumento: React.FC<TVTextFieldCnpjCpfProps> = ({name, ...rest}) => {
+export const VTextFieldTel: React.FC<TVTextFieldProps> = ({name, ...rest}) => {
+    
     const {fieldName, registerField, defaultValue, error, clearError} = useField(name); 
 
-    const[value, setValue] = useState(defaultValue || '');
-    
-    
+    const[value, setValue] =useState(defaultValue || '');
 
     useEffect(() => {
         registerField({
@@ -22,27 +23,30 @@ export const VTextFieldDocumento: React.FC<TVTextFieldCnpjCpfProps> = ({name, ..
             getValue: () => value,
             setValue: (_, newValue) => setValue(newValue),
             
+
     }) 
-        
     }, [registerField, fieldName, value])
-
-    
-
-  
 
 
     return (
+        
         <TextField 
             {...rest}
-
+            
+            
             error = {!!error}
             helperText={error}
-            defaultValue={defaultValue}
-            value ={value}
-            label = {value.length == 11 ? 'CPF' : value.length == 14 ? 'CNPJ' : "Documento CNPJ / CPF"}
             onKeyDown={(e) => {error && clearError(); rest.onKeyDown?.(e)}}
+
+            defaultValue={defaultValue}
+            
+            value ={value}
             onChange = {e => {setValue(e.target.value); rest.onChange?.(e)}}
-        />
+        >
+            
+        </TextField>
+        
+    
     );
 };
 

@@ -9,11 +9,8 @@ import ClienteForm from "../../shared/forms/cliente-form/ClienteForm";
 
 
 interface IFormData {
-    sufixo: string;
-    nome: string;
-    documento: string;
-    inscricao: string;
-    ccm: string;
+    sufixo: string; nome: string; documento: string; inscricao: string; ccm: string;
+    contato: string; tel: string; cel: string; email: string; site: string; 
 }
 
 
@@ -24,12 +21,18 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     documento: yup.string().notRequired().default(''),
     inscricao: yup.string().notRequired().default(''),
     ccm: yup.string().notRequired().default(''),
+    contato: yup.string().notRequired().default(''),
+    tel: yup.string().notRequired().default(''),
+    cel: yup.string().notRequired().default(''),
+    email: yup.string().email().notRequired().default(''),
+    site: yup.string().url().notRequired().default(''),
 });
 
 
 export const DetalhesDeClientes: React.FC = () => {
     // passar o submit para o botão salvar  
-    const  {formRef, save, saveAndClose, isSaveAndClose } = useVForm(); 
+    const  {formRef, save, saveAndClose, isSaveAndClose } = useVForm();
+
     const navigate = useNavigate();
     const { id = 'novo' } = useParams<'id'>();
     const [isLoading, setIsLoading] = useState(false);
@@ -55,9 +58,7 @@ export const DetalhesDeClientes: React.FC = () => {
             });
         } else { 
             formRef.current?.setData({
-                nome: '',
-                email: '',
-                
+                sufixo: '', nome: '', documento: '', inscricao: '', ccm: '',
             });
         }
     }, [id]);

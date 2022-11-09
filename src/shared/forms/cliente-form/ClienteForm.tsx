@@ -1,9 +1,9 @@
 /** Formulario Cliente Detalhes */
 
 import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControlLabel, Grid, LinearProgress, Paper, Radio, RadioGroup, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControlLabel, Grid, LinearProgress, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { VTextField, VTextFieldDocumento } from "..";
+import { VTextField, VTextFieldTel, VTextFieldDocumento} from "..";
 
 
 
@@ -44,17 +44,50 @@ return(
     
             <Grid container item direction="row" spacing={2}>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-                    <VTextFieldDocumento name='documento' label="C.N.P.J. / C.P.F." fullWidth placeholder="só digite os numeros"  disabled={isLoading} size="small"/>
+                    <VTextFieldDocumento name='documento' fullWidth placeholder="só digite os numeros"  disabled={isLoading} size="small"
+                                         />
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-                    <VTextField name='inscricao' label="Inscrição Estadual / R.G." fullWidth disabled={isLoading} size="small"/>
+                    <VTextField name='inscricao' label="Inscrição Estadual / R.G." placeholder="só digite os numeros" fullWidth disabled={isLoading} size="small"/>
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
                     <VTextField name='ccm' label="C.C.M." fullWidth placeholder="só digite os numeros" disabled={isLoading} size="small"/>
                 </Grid>
+            </Grid>
 
+            {/*Contato*/}
+            <Grid item>
+                <Typography variant="h5">
+                    Contato
+                </Typography>
+            </Grid>
+
+            <Grid container item direction="row" spacing={2}>
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+                    <VTextField  name='contato' label="Contato" fullWidth disabled={isLoading} size="small" />
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                    <VTextField  name='tel' label="Telefone" fullWidth placeholder="(11) 1111-1111" disabled={isLoading} size="small" /> 
+                        
+                    
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                    <VTextField name='cel' label="Celular" fullWidth placeholder="(11) 91111-1111" disabled={isLoading} size="small"/>
+                </Grid>
+            </Grid>
+
+            <Grid container item direction="row" spacing={2}>
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+                    <VTextField name='email' label="E-mail" fullWidth disabled={isLoading} size="small"/>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+                    <VTextField name='site' label="Site" fullWidth disabled={isLoading} size="small"/>
+                </Grid>
             </Grid>
         </Grid>
     </Box>
