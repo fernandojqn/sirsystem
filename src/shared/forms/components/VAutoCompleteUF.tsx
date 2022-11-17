@@ -1,15 +1,14 @@
 import { TextField, TextFieldProps } from "@mui/material";
+
 import { useField } from "@unform/core";
 import { useEffect, useState } from "react";
 
 
-
-type TVTextFieldProps = TextFieldProps & {
+type TVAutoCompleteUFProps = TextFieldProps & {
     name: string;
-    
 }
 
-export const VTextFieldTel: React.FC<TVTextFieldProps> = ({name, ...rest}) => {
+export const VAutoCompleteUF: React.FC<TVAutoCompleteUFProps> = ({name, ...rest}) => {
     
     const {fieldName, registerField, defaultValue, error, clearError} = useField(name); 
 
@@ -20,18 +19,17 @@ export const VTextFieldTel: React.FC<TVTextFieldProps> = ({name, ...rest}) => {
             name: fieldName,
             getValue: () => value,
             setValue: (_, newValue) => setValue(newValue),
-            
-
     }) 
+
+        
+
     }, [registerField, fieldName, value])
 
 
     return (
-        
         <TextField 
             {...rest}
-            
-            
+
             error = {!!error}
             helperText={error}
             onKeyDown={(e) => {error && clearError(); rest.onKeyDown?.(e)}}
@@ -40,11 +38,7 @@ export const VTextFieldTel: React.FC<TVTextFieldProps> = ({name, ...rest}) => {
             
             value ={value}
             onChange = {e => {setValue(e.target.value); rest.onChange?.(e)}}
-        >
-            
-        </TextField>
-        
-    
+
+        />
     );
 };
-

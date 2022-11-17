@@ -10,7 +10,23 @@ export interface IListagemClientes {
 export interface IDetalhesCliente {
     id: number; 
     sufixo: string; nome: string; documento: string; inscricao: string; ccm: string;
-    contato: string; tel: string; cel: string; email: string; site: string; 
+    contato: string; tel: string; cel: string; email: string; site: string;
+
+    end: string; num: string; compl: string; bairro: string; cidade: string;
+    uf: string; cep: string; pais: string; muni: string; 
+
+    endEnt: string; numEnt: string; complEnt: string; bairroEnt: string; cidadeEnt: string;
+    ufEnt: string; cepEnt: string; paisEnt: string; muniEnt: string; 
+
+    endCor: string; numCor: string; complCor: string; bairroCor: string; cidadeCor: string;
+    ufCor: string; cepCor: string; paisCor: string; muniCor: string; 
+
+    ativ: string; vend: string; pag1: string; pag2: string; pag3: string; pag4: string; pag5: string; 
+    pag6: string; desc1: string; desc2: string; desc3: string; obs: string; 
+    
+    cofins: number; pis: number; icms: number; ipi: number;
+
+    simplesNasc: string; retemISS: string;
 }
 
 type TClientesComTotalCount = {
