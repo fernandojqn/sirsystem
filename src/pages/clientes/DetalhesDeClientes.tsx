@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
-import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VTextFieldDocumento } from "../../shared/forms";
+import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VNumericFormat, VPatternFormat } from "../../shared/forms";
 import * as yup from 'yup';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
@@ -105,9 +105,7 @@ export const DetalhesDeClientes: React.FC = () => {
     const { id = 'novo' } = useParams<'id'>();
     const [isLoading, setIsLoading] = useState(false);
     const [sufixo, setSufixo] = useState('');
-
-    const [isEndEntrega, setEndEntrega] = useState(false);
-    const [isEndCorrespondencia, setEndCorrespondencia] = useState(false);
+    
     
     //trazer dados do cliente
     useEffect(() => {
@@ -272,8 +270,8 @@ export const DetalhesDeClientes: React.FC = () => {
 
     //O mesmo Entrega
     const handleEndEntrega = () => {
-        
-        console.log(formRef.current?.getFieldValue('end'));
+        console.log('OI')
+        console.log(formRef.current?.getFieldValue('sufixo'));
 
         
     };
@@ -296,375 +294,378 @@ export const DetalhesDeClientes: React.FC = () => {
         
         {/* Formulario*/}
             <VForm ref={formRef} onSubmit= {handleSave} >
-            <Box margin={1} display= 'flex' flexDirection='column' component={Paper} variant= 'outlined'>
-                
-                <Grid container direction="column" padding={2} spacing={2}>
-                    {/* Loading da pagina*/}
-                    {isLoading && (
+                <Box margin={1} display= 'flex' flexDirection='column' component={Paper} variant= 'outlined'>
+                    
+                    <Grid container direction="column" padding={2} spacing={2}>
+                        {/* Loading da pagina*/}
+                        {isLoading && (
+                            <Grid item>
+                        <LinearProgress variant='indeterminate' />
+                            </Grid>
+                        )}
+            
+                        {/* Dados Cadastrias */}
                         <Grid item>
-                    <LinearProgress variant='indeterminate' />
+                            <Typography variant="h5">
+                                Dados Cadastrais 
+                            </Typography>
                         </Grid>
-                    )}
-        
-                    {/* Dados Cadastrias */}
-                    <Grid item>
-                        <Typography variant="h5">
-                            Dados Cadastrais 
-                        </Typography>
-                    </Grid>
-        
-                    <Grid container item direction="row" spacing={2}>
-                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                            <VTextField name='sufixo' label="Sufixo" fullWidth disabled={isLoading} size="small"/> {/* onChange = {e=> setNome(e.target.value)}*/}
+            
+                        <Grid container item direction="row" spacing={2}>
+                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <VTextField name='sufixo' label="Sufixo" fullWidth disabled={isLoading} size="small"/> {/* onChange = {e=> setNome(e.target.value)}*/}
+                            </Grid>
+                            
+                            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <VTextField name='nome' label="Nome" fullWidth disabled={isLoading}size="small"/> {/* onChange = {e=> setNome(e.target.value)}*/}
+                            </Grid>
+                        </Grid>
+                
+                        <Grid container item direction="row" spacing={2}>
+                            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+                                <VTextField name='documento' fullWidth placeholder="só digite os numeros"  disabled={isLoading} size="small" />
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+                                <VTextField name='inscricao' label="Inscrição Estadual / R.G." placeholder="só digite os numeros" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+                                <VTextField name='ccm' label="C.C.M." fullWidth placeholder="só digite os numeros" disabled={isLoading} size="small"/>
+                            </Grid>
+                        </Grid>
+            
+                        {/*Contato*/}
+                        <Grid item>
+                            <Typography variant="h5">
+                                Contato
+                            </Typography>
+                        </Grid>
+            
+                        <Grid container item direction="row" spacing={2}>
+                            <Grid item xs={12} sm={12} md={6} lg={5} xl={3}>
+                                <VTextField  name='contato' label="Contato" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
+                                <VPatternFormat name='tel' label="Telefone" format="(##) #### ####"  
+                                                fullWidth placeholder="(11) 1111-1111" disabled={isLoading}/> 
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
+                                <VPatternFormat name='cel' label="Celular" format="(##) # #### ####"  
+                                                fullWidth placeholder="(11) 91111-1111" disabled={isLoading}/>
+                            </Grid>
+                        </Grid>
+            
+                        <Grid container item direction="row" spacing={2}>
+                            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+                                <VTextField name='email' label="E-mail" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+                                <VTextField name='site' label="Site" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+                        </Grid>
+            
+                        {/*Endereço*/}
+                        <Grid item>
+                            <Typography variant="h5">
+                                Endereço
+                            </Typography>
                         </Grid>
                         
-                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                            <VTextField name='nome' label="Nome" fullWidth disabled={isLoading}size="small"/> {/* onChange = {e=> setNome(e.target.value)}*/}
-                        </Grid>
-                    </Grid>
+                        <Grid container item direction="row" spacing={2}>
+                            <Grid item xs={12} sm={12} md={7} lg={5} xl={3}>
+                                <VTextField name='end'label="Endereço" fullWidth disabled={isLoading} size="small" value={'i'}/>
+                                    
+                            </Grid> 
             
-                    <Grid container item direction="row" spacing={2}>
-                        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <VTextFieldDocumento name='documento' fullWidth placeholder="só digite os numeros"  disabled={isLoading} size="small" />
+                            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+                                <VTextField name='num' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                <VTextField name='compl' label="complemento" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
                         </Grid>
-        
-                        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <VTextField name='inscricao' label="Inscrição Estadual / R.G." placeholder="só digite os numeros" fullWidth disabled={isLoading} size="small"/>
+            
+                        <Grid container item direction="row" spacing={2}>
+                            <Grid item xs={12} sm={4} md={5} lg={4} xl={3}>
+                                <VTextField name='bairro' label="Bairro" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+            
+                            <Grid item xs={12} sm={4} md={5} lg={2} xl={2}>
+                                <VTextField name='cidade' label="Cidade" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+                        
+                            <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
+                            <VTextField name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
                         </Grid>
-        
-                        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <VTextField name='ccm' label="C.C.M." fullWidth placeholder="só digite os numeros" disabled={isLoading} size="small"/>
+            
+                        <Grid container item direction="row" spacing={2}>
+                            <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
+                                <VPatternFormat name='cep' label="C.E.P."  format="#####-###" 
+                                                fullWidth disabled={isLoading} onBlur={checkCep}/>
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
+                                <VTextField name='pais' label="País" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
+            
+                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                <VTextField name='muni' label="Cod. Municipio" fullWidth disabled={isLoading} size="small"/>
+                            </Grid>
                         </Grid>
-                    </Grid>
-        
-                    {/*Contato*/}
-                    <Grid item>
-                        <Typography variant="h5">
-                            Contato
-                        </Typography>
-                    </Grid>
-        
-                    <Grid container item direction="row" spacing={2}>
-                        <Grid item xs={12} sm={12} md={6} lg={5} xl={3}>
-                            <VTextField  name='contato' label="Contato" fullWidth disabled={isLoading} size="small" />
-                        </Grid>
-        
-                        <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                            <VTextField  name='tel' label="Telefone" fullWidth placeholder="(11) 1111-1111" disabled={isLoading} size="small" /> 
-                        </Grid>
-        
-                        <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                            <VTextField name='cel' label="Celular" fullWidth placeholder="(11) 91111-1111" disabled={isLoading} size="small"/>
-                        </Grid>
-                    </Grid>
-        
-                    <Grid container item direction="row" spacing={2}>
-                        <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
-                            <VTextField name='email' label="E-mail" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-        
-                        <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
-                            <VTextField name='site' label="Site" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-                    </Grid>
-        
-                    {/*Endereço*/}
-                    <Grid item>
-                        <Typography variant="h5">
-                            Endereço
-                        </Typography>
-                    </Grid>
-                    
-                    <Grid container item direction="row" spacing={2}>
-                        <Grid item xs={12} sm={12} md={7} lg={5} xl={3}>
-                            <VTextField name='end'label="Endereço" fullWidth disabled={isLoading} size="small" value={'i'}/>
-                                
-                        </Grid> 
-        
-                        <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                            <VTextField name='num' label="Numero" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-        
-                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                            <VTextField name='compl' label="complemento" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-                    </Grid>
-        
-                    <Grid container item direction="row" spacing={2}>
-                        <Grid item xs={12} sm={4} md={5} lg={4} xl={3}>
-                            <VTextField name='bairro' label="Bairro" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-        
-                        <Grid item xs={12} sm={4} md={5} lg={2} xl={2}>
-                            <VTextField name='cidade' label="Cidade" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-                       
-                        <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                        <VTextField name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-                    </Grid>
-        
-                    <Grid container item direction="row" spacing={2}>
-                        <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                            <VTextField name='cep' label="C.E.P." fullWidth disabled={isLoading} size="small" onBlur={checkCep}/>
-                        </Grid>
-        
-                        <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
-                            <VTextField name='pais' label="País" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-        
-                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                            <VTextField name='muni' label="Cod. Municipio" fullWidth disabled={isLoading} size="small"/>
-                        </Grid>
-                    </Grid>
-                     
-        
-                    {/*End de Entrega*/}
-                    <Grid item direction="row"  marginTop={1} marginLeft={0.4} xs={12} >
-                        <Accordion expanded={true} > 
-                            <AccordionSummary expandIcon={<ExpandMore />} >
-                                <Grid container item direction="row" component={Box} flex={1} display="flex"  >
-                                    <Grid item>
-                                        <Typography variant="h5">
-                                            Endereço de entrega
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
-                                        <Checkbox name="cbxEndEntrega" onClick={handleEndEntrega}/>
-        
-                                        <Typography >
-                                            o mesmo do endereço
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </AccordionSummary>
-                            <AccordionDetails >
-                                <Grid container direction="column" padding={2} spacing={2}>
-                                    <Grid container item direction="row" spacing={2}>
-                                        <Grid item xs={12} sm={12} md={7} lg={4} xl={3}>
-                                            <VTextField name='endEnt' label="Endereço" fullWidth disabled={isLoading} size="small"/>
+                        
+            
+                        {/*End de Entrega*/}
+                        <Grid item direction="row"  marginTop={1} marginLeft={0.4} xs={12} >
+                            <Accordion expanded={true} > 
+                                <AccordionSummary expandIcon={<ExpandMore />} >
+                                    <Grid container item direction="row" component={Box} flex={1} display="flex"  >
+                                        <Grid item>
+                                            <Typography variant="h5">
+                                                Endereço de entrega
+                                            </Typography>
                                         </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                            <VTextField name='numEnt' label="Numero" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='complEnt' label="complemento" fullWidth disabled={isLoading} size="small"/>
+                                        <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
+                                            <Checkbox name="cbxEndEntrega" onClick={handleEndEntrega}/>
+            
+                                            <Typography >
+                                                o mesmo do endereço
+                                            </Typography>
                                         </Grid>
                                     </Grid>
-        
-                                    <Grid container item direction="row" spacing={2}>
-                                        <Grid item xs={12} sm={12} md={5} lg={4} xl={3}>
-                                            <VTextField name='bairroEnt' label="Bairro" fullWidth disabled={isLoading} size="small"/>
+                                </AccordionSummary>
+                                <AccordionDetails >
+                                    <Grid container direction="column" padding={2} spacing={2}>
+                                        <Grid container item direction="row" spacing={2}>
+                                            <Grid item xs={12} sm={12} md={7} lg={4} xl={3}>
+                                                <VTextField name='endEnt' label="Endereço" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+                                                <VTextField name='numEnt' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VTextField name='complEnt' label="complemento" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
                                         </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={5} lg={2} xl={2}>
-                                            <VTextField name='cidadeEnt' label="Cidade" fullWidth disabled={isLoading} size="small"/>
+            
+                                        <Grid container item direction="row" spacing={2}>
+                                            <Grid item xs={12} sm={12} md={5} lg={4} xl={3}>
+                                                <VTextField name='bairroEnt' label="Bairro" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={5} lg={2} xl={2}>
+                                                <VTextField name='cidadeEnt' label="Cidade" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+                                                <VTextField name='ufEnt' label="Estado" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
                                         </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                            <VTextField name='ufEnt' label="Estado" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-        
-                                    <Grid container item direction="row" spacing={2}>
-                                        
-                                        <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                            <VTextField name='cepEnt' label="C.E.P." fullWidth disabled={isLoading} size="small" onBlur={checkCepEnt}/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
-                                            <VTextField name='paisEnt' label="País" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='munEnt' label="Cod. Municipio" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </AccordionDetails>
-                        </Accordion>
-                    </Grid>
-        
-                    {/*End de Correspondencia*/}
-                    <Grid item direction="row"  marginTop={1} marginLeft={0.4} xs={12} >
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMore />} >
-                                <Grid container item direction="row" component={Box} flex={1} display="flex"  >
-                                    <Grid item>
-                                        <Typography variant="h5">
-                                            Endereço de correspondencia
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
-                                        <Typography >
-                                            <Checkbox/> o mesmo do endereço
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Grid container direction="column" padding={2} spacing={2}>
-                                    <Grid container item direction="row" spacing={2}>
-                                        <Grid item xs={12} sm={12} md={7} lg={4} xl={3}>
-                                            <VTextField name='endCor' label="Endereço" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                            <VTextField name='numCor' label="Numero" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='complCor' label="complemento" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-        
-                                    <Grid container item direction="row" spacing={2}>
-                                        <Grid item xs={12} sm={12} md={5} lg={4} xl={3}>
-                                            <VTextField name='bairroCor' label="Bairro" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={5} lg={2} xl={2}>
-                                            <VTextField name='cidadeCor' label="Cidade" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                            <VTextField name='ufCor' label="Estado" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-        
-                                    <Grid container item direction="row" spacing={2}>
-                                        
-                                        <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                            <VTextField name='cepCor' label="C.E.P." fullWidth disabled={isLoading} size="small" onBlur={checkCepCor}/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
-                                            <VTextField name='paisCor' label="País" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='munCor' label="Cod. Municipio" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </AccordionDetails>
-                        </Accordion>
-                    </Grid>
-                    
-                    {/*Complemento*/}
-                    <Grid item direction="row" marginTop={1} marginLeft={0.4} xs={12} >
-                        <Accordion >
-                            <AccordionSummary expandIcon={<ExpandMore />} >
-                                <Typography variant="h5">
-                                    Complemento
-                                </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Grid container direction="column" padding={2} spacing={2}>
-                                    <Grid container item direction="row" spacing={2}>
-                                        <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
-                                            <VTextField name='ativ' label="tipo de atividade" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={4} xl={2}>
-                                            <VTextField name='vend' label="Vendedor" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-        
-                                    <Grid container item direction="row" spacing={2} alignItems="center">
-                                        <Grid item xs={12} sm={12} md={2} lg={5} xl={3}>
-                                            <Typography> Condições de Pagamentos: </Typography>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='pag1' label="1º condição" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='pag2' label="2ª condição" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='pag3' label="3º condição" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='pag4' label="4º condição" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='pag5' label="5º condição" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='pag6' label="6º condição" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-        
-                                    <Grid container item direction="row" spacing={2} alignItems="center">
-                                        <Grid item xs={12} sm={12} md={2} lg={5} xl={3}>
-                                            <Typography> Desconto: </Typography>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='desc1' label="%" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='desc2' label="%" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                            <VTextField name='desc3' label="%" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-        
-                                    <Grid container item  spacing={2} alignItems="center">
-                                        <Grid item xs={12} sm={12} md={6} lg={5} xl={3} >
-                                            <Typography marginRight={1}> Optante pelo Simples Nacional: </Typography>
-                                            <VRadioButton2 name="simplesNasc" />
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={6} lg={5} xl={3} >
-                                            <Typography marginRight={1}> Retem I.S.S.: </Typography>
-                                            <VRadioButton2 name="retemISS" />
+            
+                                        <Grid container item direction="row" spacing={2}>
                                             
+                                            <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
+                                                <VTextField name='cepEnt' label="C.E.P." fullWidth disabled={isLoading} size="small" onBlur={checkCepEnt}/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
+                                                <VTextField name='paisEnt' label="País" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VTextField name='munEnt' label="Cod. Municipio" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
-        
-                                    <Grid container item direction="row" spacing={2} alignItems="center">
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='cofins' label="% COFINS" fullWidth disabled={isLoading} size="small"/>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+            
+                        {/*End de Correspondencia*/}
+                        <Grid item direction="row"  marginTop={1} marginLeft={0.4} xs={12} >
+                            <Accordion>
+                                <AccordionSummary expandIcon={<ExpandMore />} >
+                                    <Grid container item direction="row" component={Box} flex={1} display="flex"  >
+                                        <Grid item>
+                                            <Typography variant="h5">
+                                                Endereço de correspondencia
+                                            </Typography>
                                         </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='pis' label="% PIS" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='icms' label="% ICMS" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-        
-                                        <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                            <VTextField name='ipi' label="% IPI" fullWidth disabled={isLoading} size="small"/>
-                                        </Grid>
-                                    </Grid>
-        
-                                    <Grid container item direction="row" spacing={2} alignItems="center">
-                                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                                            <VTextField name='obs' label="Observação:" fullWidth disabled={isLoading} size="small" multiline/>
+                                        <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
+                                            <Typography >
+                                                <Checkbox/> o mesmo do endereço
+                                            </Typography>
                                         </Grid>
                                     </Grid>
-                                
-                                </Grid>
-                            </AccordionDetails>
-                        </Accordion>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Grid container direction="column" padding={2} spacing={2}>
+                                        <Grid container item direction="row" spacing={2}>
+                                            <Grid item xs={12} sm={12} md={7} lg={4} xl={3}>
+                                                <VTextField name='endCor' label="Endereço" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+                                                <VTextField name='numCor' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VTextField name='complCor' label="complemento" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+                                        </Grid>
+            
+                                        <Grid container item direction="row" spacing={2}>
+                                            <Grid item xs={12} sm={12} md={5} lg={4} xl={3}>
+                                                <VTextField name='bairroCor' label="Bairro" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={5} lg={2} xl={2}>
+                                                <VTextField name='cidadeCor' label="Cidade" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
+                                                <VTextField name='ufCor' label="Estado" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+                                        </Grid>
+            
+                                        <Grid container item direction="row" spacing={2}>
+                                            
+                                            <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
+                                                <VTextField name='cepCor' label="C.E.P." fullWidth disabled={isLoading} size="small" onBlur={checkCepCor}/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
+                                                <VTextField name='paisCor' label="País" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VTextField name='munCor' label="Cod. Municipio" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+                        
+                        {/*Complemento*/}
+                        <Grid item direction="row" marginTop={1} marginLeft={0.4} xs={12} >
+                            <Accordion >
+                                <AccordionSummary expandIcon={<ExpandMore />} >
+                                    <Typography variant="h5">
+                                        Complemento
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Grid container direction="column" padding={2} spacing={2}>
+                                        <Grid container item direction="row" spacing={2}>
+                                            <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
+                                                <VTextField name='ativ' label="tipo de atividade" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={4} xl={2}>
+                                                <VTextField name='vend' label="Vendedor" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+                                        </Grid>
+            
+                                        <Grid container item direction="row" spacing={2} alignItems="center">
+                                            <Grid item xs={12} sm={12} md={2} lg={5} xl={3}>
+                                                <Typography> Condições de Pagamentos: </Typography>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VTextField name='pag1' label="1º condição" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VTextField name='pag2' label="2ª condição" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VTextField name='pag3' label="3º condição" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VTextField name='pag4' label="4º condição" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VTextField name='pag5' label="5º condição" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VTextField name='pag6' label="6º condição" fullWidth disabled={isLoading} size="small"/>
+                                            </Grid>
+                                        </Grid>
+            
+                                        <Grid container item direction="row" spacing={2} alignItems="center">
+                                            <Grid item xs={12} sm={12} md={2} lg={5} xl={3}>
+                                                <Typography> Desconto: </Typography>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VNumericFormat name='desc1' label="%" fullWidth disabled={isLoading} />
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VNumericFormat name='desc2' label="%" fullWidth disabled={isLoading} />
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                                <VNumericFormat name='desc3' label="%" fullWidth disabled={isLoading} />
+                                            </Grid>
+                                        </Grid>
+            
+                                        <Grid container item  spacing={2} alignItems="center">
+                                            <Grid item xs={12} sm={12} md={6} lg={5} xl={3} >
+                                                <Typography marginRight={1}> Optante pelo Simples Nacional: </Typography>
+                                                <VRadioButton2 name="simplesNasc" />
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={6} lg={5} xl={3} >
+                                                <Typography marginRight={1}> Retem I.S.S.: </Typography>
+                                                <VRadioButton2 name="retemISS" />
+                                                
+                                            </Grid>
+                                        </Grid>
+            
+                                        <Grid container item direction="row" spacing={2} alignItems="center">
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VNumericFormat name='cofins' label="% COFINS" fullWidth disabled={isLoading}/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VNumericFormat name='pis' label="% PIS" fullWidth disabled={isLoading}/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VNumericFormat name='icms' label="% ICMS" fullWidth disabled={isLoading}/>
+                                            </Grid>
+            
+                                            <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
+                                                <VNumericFormat name='ipi' label="% IPI" fullWidth disabled={isLoading}/>
+                                            </Grid>
+                                        </Grid>
+            
+                                        <Grid container item direction="row" spacing={2} alignItems="center">
+                                            <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                                                <VTextField name='obs' label="Observação:" fullWidth disabled={isLoading} size="small" multiline/>
+                                            </Grid>
+                                        </Grid>
+                                    
+                                    </Grid>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+            
                     </Grid>
-        
-                </Grid>
-            </Box>
+                </Box>
             </VForm>
          </LayoutBase>
          
