@@ -1,41 +1,45 @@
 import { Icon, IconButton, LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom"
-import { FerramentasDeListagem } from "../../shared/components"
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { FerramentasDeListagem } from "../../shared/components";
 import { Environment } from "../../shared/enviroments";
 import { useDebounce } from "../../shared/hooks";
-import { LayoutBase } from "../../shared/layouts"
-import { ClientesServices, IListagemClientes } from "../../shared/services/api/clientes/ClientesServices";
+import { LayoutBase } from "../../shared/layouts";
+import { FornecedoresServices, IListagemFornecedores } from "../../shared/services/api/fornecedores/FornecedoresServices";
 
 
 
-export const ListagemDeClientes: React.FC = () => {
-    // searchparams joga o texto na url
-    const[searchParams, setSearchParams] = useSearchParams();
-    // delay na escrita
-    const { debounce } = useDebounce(500, true); //tempo do delay e notDelayInFirstTime
-    // Navegar detalhe clientes
+export const ListagemDeFornecedores: React.FC = () => {
     const navigate = useNavigate();
 
-    //Lista
-    const [rows, setRows] = useState<IListagemClientes[]>([]); // guardar as informações da consulta
-    const [totalCount, setTotalCount] = useState(0); //guardar o numero maximo da consulta
-    const [isLoading, setIsLoading] = useState(true); //loading do carregamento da busca
+    // delay na escrita
+    const { debounce } = useDebounce(500, true); //tempo do delay e notDelayInFirstTime
+    
+    // searchparams joga o texto na url
+    const[searchParams, setSearchParams] = useSearchParams();
 
     const busca = useMemo(() => {
         return searchParams.get('busca') || '';
     }, [searchParams]);
 
+    //Contar paginas
     const pagina = useMemo(() => {
         return Number (searchParams.get('pagina') || '1');
     }, [searchParams]);
 
+    //Lista
+    const [rows, setRows] = useState<IListagemFornecedores[]>([]); // guardar as informações da consulta
+    const [totalCount, setTotalCount] = useState(0); //guardar o numero maximo da consulta
+    const [isLoading, setIsLoading] = useState(true); //loading do carregamento da busca
+    
+
+    //Puxar os Fornecedores
     useEffect(() => {
         setIsLoading(true);
 
         debounce(() => {
             // Chama a consulta e esperamos uma promessa 
-            ClientesServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
+            FornecedoresServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
             .then((result) => { // .then espera a promessa chegar
                 setIsLoading(false); 
 
@@ -47,19 +51,23 @@ export const ListagemDeClientes: React.FC = () => {
                     setRows(result.data);
                 }
             })    
-            })
+        })
     },[busca, pagina]);
+    
 
     return(
-        <LayoutBase 
-            titulo= 'Listagem de Clientes'
+        <LayoutBase
+            titulo="Listagem de Fornecedores"
             barraDeFerramentas={(
                 <FerramentasDeListagem
-                aoClicarNoBotaoNovo={() => navigate('/clientes/detalhesDeClientes/novo')} 
-                mostrarInputBusca 
-                textoDaBusca={busca}
-                aoMudarTextoDaBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace: true})}/>
-            )} >
+                    textoDoBotaoNovo="Novo"
+                    aoClicarNoBotaoNovo={() => navigate('/fornecedores/detalhesDeFornecedores/novo')}
+                    mostrarInputBusca 
+                    textoDaBusca={busca}
+                    aoMudarTextoDaBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace: true})}
+                />
+            )}
+        >
 
             {/* Tabela */}
             <TableContainer component={Paper} variant="outlined" sx={{margin: 1, width:"auto"}}>
@@ -67,24 +75,22 @@ export const ListagemDeClientes: React.FC = () => {
                     <TableHead> 
                         <TableRow>
                             <TableCell width={40}>Ações</TableCell>
-                            <TableCell width={250}>Sufixo</TableCell>
-                            <TableCell width={250}>Nomes</TableCell>
-                            
+                            <TableCell width={250}>Fornecedor</TableCell>
+                            <TableCell width={250}>Nome</TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
                         {rows.map(row => (
                             <TableRow key={row.id}>
-                            <TableCell>
-                               <IconButton size = "small" onClick={() => navigate(`/clientes/detalhesDeClientes/${row.id}`)}> 
-                                <Icon> edit </Icon>
-                               </IconButton>
-                            </TableCell>
-                            <TableCell>{row.sufixo}</TableCell>
-                            <TableCell>{row.nome}</TableCell>
-                            
-                        </TableRow>
+                                <TableCell>
+                                    <IconButton size = "small" onClick={() => navigate(`/fornecedores/detalhesDeFornecedores/${row.id}`)}> 
+                                        <Icon> edit </Icon>
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell>{row.sufixo}</TableCell>
+                                <TableCell>{row.nome}</TableCell>
+                            </TableRow>
                         ))}
                     </TableBody>
 
@@ -123,5 +129,5 @@ export const ListagemDeClientes: React.FC = () => {
                 </Table>
             </TableContainer>
         </LayoutBase>
-    )
+    );
 }

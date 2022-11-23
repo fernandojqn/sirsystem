@@ -69,7 +69,7 @@ export default function MenuLista() {
                 
                 <ListItemLink 
                     label = 'Atividades' 
-                    to ='/pagina-inicial'
+                    to ='/atividades'
                     onClick = {smDown ? toggleDrawerOpen : undefined} 
                 />
                 
