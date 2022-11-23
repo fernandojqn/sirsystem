@@ -5,10 +5,10 @@ import { FerramentasDeListagem } from "../../shared/components"
 import { Environment } from "../../shared/enviroments";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBase } from "../../shared/layouts"
-import { AtividadesServices, IListagemAtividades } from "../../shared/services/api/atividades/AtividadesServices";
+import { EmpresasServices, IListagemEmpresas } from "../../shared/services/api/empresas/EmpresasServices";
 
 
-export const ListagemDeAtividades: React.FC = () => {
+export const ListagemDeEmpresas: React.FC = () => {
     const navigate = useNavigate();
     
     // delay na escrita
@@ -28,18 +28,18 @@ export const ListagemDeAtividades: React.FC = () => {
 
 
     //Lista
-    const [rows, setRows] = useState<IListagemAtividades[]>([]); // guardar as informações da consulta
+    const [rows, setRows] = useState<IListagemEmpresas[]>([]); // guardar as informações da consulta
     const [totalCount, setTotalCount] = useState(0); //guardar o numero maximo da consulta
     const [isLoading, setIsLoading] = useState(true); //loading do carregamento da busca
 
 
-    //Puxa as Atividades
+    //Puxa as Empresas
     useEffect(() => {
         setIsLoading(true);
 
         debounce(() => {
             // Chama a consulta e esperamos uma promessa 
-            AtividadesServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
+            EmpresasServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
             .then((result) => { // .then espera a promessa chegar
                 setIsLoading(false); 
 
@@ -54,31 +54,15 @@ export const ListagemDeAtividades: React.FC = () => {
         })
     },[busca, pagina]);
 
-    const handleDelete = (id: number) => {
-        
-          AtividadesServices.deleteById(id)
-            .then(result => {
-              if (result instanceof Error) {
-                alert(result.message);
-              } else {
-                setRows(oldRows => [
-                  ...oldRows.filter(oldRow => oldRow.id !== id),
-                ]);
-                alert('Registro apagado com sucesso!');
-              }
-            });
-        
-      };
 
-
-
+    
     return (
         <LayoutBase 
-            titulo= 'Atividades'
+            titulo= 'Empresas'
             barraDeFerramentas={(
                 <FerramentasDeListagem
                 textoDoBotaoNovo="Nova"
-                aoClicarNoBotaoNovo={() => navigate('/atividades/detalhesDeAtividades/novo')} 
+                aoClicarNoBotaoNovo={() => navigate('/empresas/detalhesDeEmpresas/novo')} 
                 mostrarInputBusca 
                 textoDaBusca={busca}
                 aoMudarTextoDaBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace: true})}/>
@@ -90,7 +74,8 @@ export const ListagemDeAtividades: React.FC = () => {
                     <TableHead> 
                         <TableRow>
                             <TableCell width={100}>Ações</TableCell>
-                            <TableCell width={250}>Atividade</TableCell>
+                            <TableCell width={250}>empresa</TableCell>
+                            <TableCell width={250}>nome</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -98,23 +83,19 @@ export const ListagemDeAtividades: React.FC = () => {
                         {rows.map(row => (
                             <TableRow key={row.id}>
                             <TableCell>
-                               <IconButton size = "small" onClick={() => navigate(`/atividades/detalhesDeAtividades/${row.id}`)}> 
+                               <IconButton size = "small" onClick={() => navigate(`/empresas/detalhesDeEmpresas/${row.id}`)}> 
                                 <Icon> edit </Icon>
                                </IconButton>
-                               <IconButton size = "small" onClick={() => handleDelete(row.id)}> 
-                                <Icon> delete </Icon>
-                               </IconButton>
                             </TableCell>
-                            <TableCell>{row.atividade}</TableCell>
-                            
-                            
+                            <TableCell>{row.sufixo}</TableCell>
+                            <TableCell>{row.nome}</TableCell>    
                         </TableRow>
                         ))}
                     </TableBody>
 
-                            {totalCount === 0 && !isLoading && (
-                                <caption>{Environment.LISTAGEM_VAZIA}</caption>
-                            )}
+                    {totalCount === 0 && !isLoading && (
+                        <caption>{Environment.LISTAGEM_VAZIA}</caption>
+                    )}
 
                     <TableFooter>
                         {/* Barra do loading */}
@@ -139,8 +120,7 @@ export const ListagemDeAtividades: React.FC = () => {
 
                                 <TableCell colSpan={1} align="right">
                                     Registros Encontrados: {totalCount}
-                                 </TableCell>    
-
+                                 </TableCell>
                             </TableRow>
                         )}                        
                     </TableFooter>

@@ -80,8 +80,8 @@ export default function MenuLista() {
                 />
                 
                 <ListItemLink 
-                    label = 'Empresa' 
-                    to ='/empresa'
+                    label = 'Empresas' 
+                    to ='/empresas'
                     onClick = {smDown ? toggleDrawerOpen : undefined} 
                 />
                 

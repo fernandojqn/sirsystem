@@ -631,5 +631,17 @@
       "id": 5,
       "login": "pepe"
     }
+  ],
+  "empresas": [
+    {
+      "nome": "baboo",
+      "id": 1,
+      "sufixo": "pepe"
+    },
+    {
+      "nome": "Fernando",
+      "id": 2,
+      "sufixo": "pepe"
+    }
   ]
 }

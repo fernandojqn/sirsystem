@@ -3,6 +3,8 @@ export * from './atividades/ListagemDeAtividades';
 export * from './atividades/DetalhesDeAtividades';
 export * from './clientes/ListagemDeClientes';
 export * from './clientes/DetalhesDeClientes';
+export * from './empresas/ListagemDeEmpresas';
+export * from './empresas/DetalhesDeEmpresas';
 export * from './fornecedores/ListagemDeFornecedores';
 export * from './fornecedores/DetalhesDeFornecedores';
 export * from './transportadoras/ListagemDeTransportadoras';

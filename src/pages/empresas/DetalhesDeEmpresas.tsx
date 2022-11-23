@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { IVFormErrors, useVForm, VForm, VTextField } from "../../shared/forms";
 import { LayoutBase } from "../../shared/layouts"
-import { AtividadesServices, IDetalhesAtividades } from "../../shared/services/api/atividades/AtividadesServices";
+import { AtividadesServices } from "../../shared/services/api/atividades/AtividadesServices";
 import * as yup from 'yup';
 
 
@@ -12,12 +12,12 @@ interface IFormData {
     atividade: string;
 }
 
-const formValidationSchema: yup.SchemaOf <IFormData> = yup.object().shape({
+const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     atividade: yup.string().required().min(3),
     
 });
 
-export const DetalhesDeAtividades: React.FC = () => {
+export const DetalhesDeEmpresas: React.FC = () => {
     // passar o submit para o botão salvar  
     const  {formRef, save, saveAndClose, isSaveAndClose } = useVForm();
 
