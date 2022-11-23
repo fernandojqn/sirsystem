@@ -427,5 +427,209 @@
       "sufixo": "baboo",
       "id": 14
     }
+  ],
+  "transportadoras": [
+    {
+      "id": 1,
+      "sufixo": "Sedex144",
+      "documento": "",
+      "inscricao": "",
+      "contato": "",
+      "tel": "",
+      "cel": "",
+      "email": "",
+      "site": "",
+      "end": "",
+      "num": "",
+      "compl": "",
+      "bairro": "",
+      "cidade": "",
+      "uf": "",
+      "cep": "",
+      "pais": "",
+      "muni": ""
+    },
+    {
+      "id": 3,
+      "muni": "3550308",
+      "pais": "Brasil",
+      "cep": "02041070",
+      "uf": "SP",
+      "cidade": "São Paulo",
+      "bairro": "Jardim São Paulo(Zona Norte)",
+      "compl": "",
+      "num": "",
+      "end": "Rua Cristóvão Vaz",
+      "site": "sfsf",
+      "email": "fsddfsdf@sdf.com",
+      "cel": "3454353453",
+      "tel": "546654566456456",
+      "contato": "xcffvx",
+      "inscricao": "147258",
+      "documento": "123456",
+      "sufixo": "Sedex 3",
+      "ccm": "15963"
+    },
+    {
+      "id": 4,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 5,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 6,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 7,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 8,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 9,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 10,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 11,
+      "sufixo": "Sedex"
+    },
+    {
+      "id": 12,
+      "sufixo": "Sedex"
+    },
+    {
+      "sufixo": "Fedex",
+      "id": 13
+    },
+    {
+      "sufixo": "baboo",
+      "id": 14
+    },
+    {
+      "sufixo": "PEX",
+      "documento": "",
+      "inscricao": "",
+      "ccm": "",
+      "contato": "",
+      "tel": "",
+      "cel": "",
+      "email": "",
+      "site": "",
+      "end": "",
+      "num": "",
+      "compl": "",
+      "bairro": "",
+      "cidade": "",
+      "uf": "",
+      "cep": "",
+      "pais": "Brasil",
+      "muni": "",
+      "id": 15
+    },
+    {
+      "sufixo": "Pex 2",
+      "documento": "",
+      "inscricao": "",
+      "ccm": "",
+      "contato": "",
+      "tel": "",
+      "cel": "",
+      "email": "",
+      "site": "",
+      "end": "",
+      "num": "",
+      "compl": "",
+      "bairro": "",
+      "cidade": "",
+      "uf": "",
+      "cep": "",
+      "pais": "Brasil",
+      "muni": "",
+      "id": 16
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "email": "",
+      "cel": "",
+      "tel": "",
+      "departamento": "",
+      "permissoes": "",
+      "login": "pepe",
+      "nome": "Sedex 12"
+    },
+    {
+      "id": 2,
+      "email": "",
+      "cel": "",
+      "tel": "",
+      "departamento": "",
+      "permissoes": "",
+      "login": "pepe",
+      "nome": "Sedex34"
+    },
+    {
+      "id": 3,
+      "nome": "Sedex",
+      "login": "pepe"
+    },
+    {
+      "login": "pepe",
+      "nome": "Fedex",
+      "id": 4
+    },
+    {
+      "nome": "baboo",
+      "id": 5,
+      "login": "pepe"
+    },
+    {
+      "email": "fernandojqnunes@gmail.com",
+      "cel": "222222222222222222222",
+      "tel": "111111111111111",
+      "departamento": "asd",
+      "permissoes": "",
+      "login": "fer",
+      "nome": "Fernando",
+      "permissão": "asd",
+      "id": 6
+    }
+  ],
+  "vendedores": [
+    {
+      "nome": "baboo",
+      "id": 1,
+      "login": "pepe"
+    },
+    {
+      "nome": "Fernando",
+      "id": 2,
+      "login": "pepe"
+    },
+    {
+      "nome": "Cleo",
+      "id": 3,
+      "login": "pepe"
+    },
+    {
+      "nome": "Sid",
+      "id": 4,
+      "login": "pepe"
+    },
+    {
+      "nome": "Holly",
+      "id": 5,
+      "login": "pepe"
+    }
   ]
 }

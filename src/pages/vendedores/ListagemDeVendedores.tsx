@@ -5,41 +5,39 @@ import { FerramentasDeListagem } from "../../shared/components"
 import { Environment } from "../../shared/enviroments";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBase } from "../../shared/layouts"
-import { AtividadesServices, IListagemAtividades } from "../../shared/services/api/atividades/AtividadesServices";
+import { IListagemVendedores, VendedoresServices } from "../../shared/services/api/vendedores/VendedoresServices";
 
 
-export const ListagemDeAtividades: React.FC = () => {
-    const navigate = useNavigate();
-    
-    // delay na escrita
-    const { debounce } = useDebounce(500, true); //tempo do delay e notDelayInFirstTime
-    
+
+export const ListagemDeVendedores: React.FC = () => {
     // searchparams joga o texto na url
     const[searchParams, setSearchParams] = useSearchParams();
+    // delay na escrita
+    const { debounce } = useDebounce(500, true); //tempo do delay e notDelayInFirstTime
+    // Navegar detalhe clientes
+    const navigate = useNavigate();
+
+    //Lista
+    const [rows, setRows] = useState<IListagemVendedores[]>([]); // guardar as informações da consulta
+    const [totalCount, setTotalCount] = useState(0); //guardar o numero maximo da consulta
+    const [isLoading, setIsLoading] = useState(true); //loading do carregamento da busca
 
     const busca = useMemo(() => {
         return searchParams.get('busca') || '';
     }, [searchParams]);
 
-    //Contar paginas
     const pagina = useMemo(() => {
         return Number (searchParams.get('pagina') || '1');
     }, [searchParams]);
 
 
-    //Lista
-    const [rows, setRows] = useState<IListagemAtividades[]>([]); // guardar as informações da consulta
-    const [totalCount, setTotalCount] = useState(0); //guardar o numero maximo da consulta
-    const [isLoading, setIsLoading] = useState(true); //loading do carregamento da busca
-
-
-    //Puxa as Atividades
+    //Pegar os dados de vendedores
     useEffect(() => {
         setIsLoading(true);
 
         debounce(() => {
             // Chama a consulta e esperamos uma promessa 
-            AtividadesServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
+            VendedoresServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
             .then((result) => { // .then espera a promessa chegar
                 setIsLoading(false); 
 
@@ -51,34 +49,15 @@ export const ListagemDeAtividades: React.FC = () => {
                     setRows(result.data);
                 }
             })    
-        })
+            })
     },[busca, pagina]);
 
-    const handleDelete = (id: number) => {
-        
-          AtividadesServices.deleteById(id)
-            .then(result => {
-              if (result instanceof Error) {
-                alert(result.message);
-              } else {
-                setRows(oldRows => [
-                  ...oldRows.filter(oldRow => oldRow.id !== id),
-                ]);
-                alert('Registro apagado com sucesso!');
-              }
-            });
-        
-      };
-
-
-
-    return (
+    return(
         <LayoutBase 
-            titulo= 'Listagem de Clientes'
+            titulo= 'Vendedores'
             barraDeFerramentas={(
                 <FerramentasDeListagem
-                textoDoBotaoNovo="Nova"
-                aoClicarNoBotaoNovo={() => navigate('/atividades/detalhesDeAtividades/novo')} 
+                aoClicarNoBotaoNovo={() => navigate('/vendedores/detalhesDeVendedores/novo')} 
                 mostrarInputBusca 
                 textoDaBusca={busca}
                 aoMudarTextoDaBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace: true})}/>
@@ -89,8 +68,10 @@ export const ListagemDeAtividades: React.FC = () => {
                 <Table>
                     <TableHead> 
                         <TableRow>
-                            <TableCell width={100}>Ações</TableCell>
-                            <TableCell width={250}>Atividade</TableCell>
+                            <TableCell width={40}>Ações</TableCell>
+                            <TableCell width={250}>Nome</TableCell>
+                            <TableCell width={250}>Contato</TableCell>
+                            <TableCell width={250}>Telefone</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -98,16 +79,14 @@ export const ListagemDeAtividades: React.FC = () => {
                         {rows.map(row => (
                             <TableRow key={row.id}>
                             <TableCell>
-                               <IconButton size = "small" onClick={() => navigate(`/atividades/detalhesDeAtividades/${row.id}`)}> 
+                               <IconButton size = "small" onClick={() => navigate(`/vendedores/detalhesDeVendedores/${row.id}`)}> 
                                 <Icon> edit </Icon>
                                </IconButton>
-                               <IconButton size = "small" onClick={() => handleDelete(row.id)}> 
-                                <Icon> delete </Icon>
-                               </IconButton>
                             </TableCell>
-                            <TableCell>{row.atividade}</TableCell>
                             
-                            
+                            <TableCell>{row.nome}</TableCell>
+                            <TableCell>{row.contato}</TableCell>
+                            <TableCell>{row.tel}</TableCell>
                         </TableRow>
                         ))}
                     </TableBody>

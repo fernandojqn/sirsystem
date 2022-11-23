@@ -1,33 +1,31 @@
 import { Api } from "../axios-config";
 import { Environment } from "../../../enviroments";
 
-export interface IListagemFornecedores {
+export interface IListagemTransportadoras {
     id: number;
     sufixo: string; 
 }
 
-export interface IDetalhesFornecedores {
+export interface IDetalhesTransportadoras {
     id: number; 
-    sufixo: string; nome: string; documento: string; inscricao: string; ccm: string;
+    sufixo: string; documento: string; inscricao: string;
     contato: string; tel: string; cel: string; email: string; site: string;
 
     end: string; num: string; compl: string; bairro: string; cidade: string;
     uf: string; cep: string; pais: string; muni: string;
-    
-    cliente: boolean;
 }
 
-type TFornecedoresComTotalCount = {
-    data: IListagemFornecedores[]; // variavel com as informações de busca
+type TTransportadorasComTotalCount = {
+    data: IListagemTransportadoras[]; // variavel com as informações de busca
     totalCount: number; //a quantidade de resultados
 }
 
 //GetAll buscar todos
 // vai ser uma constante que vai aguardar : Recebimento <qualquer coisa / nada> e vai fazer 
-const getAll = async (page = 1, filter = ''): Promise<TFornecedoresComTotalCount | Error> => { //receber como padrão a pagina 1
+const getAll = async (page = 1, filter = ''): Promise<TTransportadorasComTotalCount | Error> => { //receber como padrão a pagina 1
     try {
         // criei um constante e ela recebe o que tem que procurar divide por paginas e coloca a quantidade que eu formatei e pegar o nome
-        const urlRelativa = `/fornecedores?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&sufixo_like=${filter}`;
+        const urlRelativa = `/transportadoras?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&sufixo_like=${filter}`;
         //constante que vai receber a data = aguardar a Api pegar os resultados (caminho)
         const { data, headers } = await Api.get(urlRelativa)
         
@@ -38,51 +36,51 @@ const getAll = async (page = 1, filter = ''): Promise<TFornecedoresComTotalCount
             }
         }
 
-        return new Error('erro ao listar as fornecedores')
+        return new Error('erro ao listar as transportadoras')
 
     } catch (error) {
         console.error(error);
-        return new Error((error as {message: string}).message || 'erro ao listar os fornecedores') 
+        return new Error((error as {message: string}).message || 'erro ao listar as transportadoras') 
     }
 }
 
 
 // Get by id Buscar por ID
-const getById = async (id: number): Promise<IDetalhesFornecedores | Error> => {
+const getById = async (id: number): Promise<IDetalhesTransportadoras | Error> => {
     try {
-        const { data } = await Api.get(`/fornecedores/${id}`);
+        const { data } = await Api.get(`/transportadoras/${id}`);
         
         if(data) {
             return data;
         }
 
-        return new Error('erro ao carregar o fornecedor');
+        return new Error('erro ao carregar a transportadora');
 
     } catch (error) {
         console.error(error);
-        return new Error((error as {message: string}).message || 'erro ao carregar o fornecedor') 
+        return new Error((error as {message: string}).message || 'erro ao carregar a transportadora') 
     }
 }
 
-const create = async (dados: Omit<IDetalhesFornecedores, 'id'>): Promise<number | Error> => { //Omit esconder o dado id
+const create = async (dados: Omit<IDetalhesTransportadoras, 'id'>): Promise<number | Error> => { //Omit esconder o dado id
     try {
-        const { data } = await Api.post<IDetalhesFornecedores>('/fornecedores', dados);
+        const { data } = await Api.post<IDetalhesTransportadoras>('/transportadoras', dados);
         
         if(data) {
             return data.id; // A resposta vai ser só o ID pois já tenho todas as informações
         }
 
-        return new Error('erro ao criar registro de fornecedores')
+        return new Error('erro ao criar registro da transportadora')
 
     } catch (error) {
         console.error(error);
-        return new Error((error as {message: string}).message || 'erro ao criar registro do fornecedor') 
+        return new Error((error as {message: string}).message || 'erro ao criar registro da transportadora') 
     }
 }
 
-const updateById = async (id: number, dados: IDetalhesFornecedores): Promise<void | Error> => {
+const updateById = async (id: number, dados: IDetalhesTransportadoras): Promise<void | Error> => {
     try {
-      await Api.put(`/fornecedores/${id}`, dados);
+      await Api.put(`/transportadoras/${id}`, dados);
     } catch (error) {
       console.error(error);
       return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
@@ -91,7 +89,7 @@ const updateById = async (id: number, dados: IDetalhesFornecedores): Promise<voi
 
 const deleteById = async (id: number): Promise<void | Error> => {
     try {
-        await Api.delete(`/fornecedores/${id}`);
+        await Api.delete(`/transportadoras/${id}`);
     } catch (error) {
         console.error(error);
         return new Error((error as {message: string}).message || 'erro ao deletar registro.') 
@@ -99,7 +97,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
 }
 
 
-export const FornecedoresServices = {
+export const TransportadorasServices = {
     getAll, getById, create, updateById, deleteById
 };
 

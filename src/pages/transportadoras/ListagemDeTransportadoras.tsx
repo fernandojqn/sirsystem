@@ -1,19 +1,20 @@
 import { Icon, IconButton, LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FerramentasDeListagem } from "../../shared/components"
 import { Environment } from "../../shared/enviroments";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBase } from "../../shared/layouts"
-import { AtividadesServices, IListagemAtividades } from "../../shared/services/api/atividades/AtividadesServices";
+import { IListagemTransportadoras, TransportadorasServices } from "../../shared/services/api/transportadoras/TransportadorasServices";
 
 
-export const ListagemDeAtividades: React.FC = () => {
+
+export const ListagemDeTransportadoras: React.FC = () => {
     const navigate = useNavigate();
-    
+
     // delay na escrita
     const { debounce } = useDebounce(500, true); //tempo do delay e notDelayInFirstTime
-    
+        
     // searchparams joga o texto na url
     const[searchParams, setSearchParams] = useSearchParams();
 
@@ -26,20 +27,19 @@ export const ListagemDeAtividades: React.FC = () => {
         return Number (searchParams.get('pagina') || '1');
     }, [searchParams]);
 
-
     //Lista
-    const [rows, setRows] = useState<IListagemAtividades[]>([]); // guardar as informações da consulta
+    const [rows, setRows] = useState<IListagemTransportadoras[]>([]); // guardar as informações da consulta
     const [totalCount, setTotalCount] = useState(0); //guardar o numero maximo da consulta
     const [isLoading, setIsLoading] = useState(true); //loading do carregamento da busca
 
 
-    //Puxa as Atividades
+    //Puxa as transportadoras
     useEffect(() => {
         setIsLoading(true);
 
         debounce(() => {
             // Chama a consulta e esperamos uma promessa 
-            AtividadesServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
+            TransportadorasServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
             .then((result) => { // .then espera a promessa chegar
                 setIsLoading(false); 
 
@@ -54,31 +54,14 @@ export const ListagemDeAtividades: React.FC = () => {
         })
     },[busca, pagina]);
 
-    const handleDelete = (id: number) => {
-        
-          AtividadesServices.deleteById(id)
-            .then(result => {
-              if (result instanceof Error) {
-                alert(result.message);
-              } else {
-                setRows(oldRows => [
-                  ...oldRows.filter(oldRow => oldRow.id !== id),
-                ]);
-                alert('Registro apagado com sucesso!');
-              }
-            });
-        
-      };
-
-
 
     return (
         <LayoutBase 
-            titulo= 'Listagem de Clientes'
+            titulo= 'Transportadoras'
             barraDeFerramentas={(
                 <FerramentasDeListagem
                 textoDoBotaoNovo="Nova"
-                aoClicarNoBotaoNovo={() => navigate('/atividades/detalhesDeAtividades/novo')} 
+                aoClicarNoBotaoNovo={() => navigate('/transportadoras/detalhesDeTransportadoras/novo')} 
                 mostrarInputBusca 
                 textoDaBusca={busca}
                 aoMudarTextoDaBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace: true})}/>
@@ -90,7 +73,7 @@ export const ListagemDeAtividades: React.FC = () => {
                     <TableHead> 
                         <TableRow>
                             <TableCell width={100}>Ações</TableCell>
-                            <TableCell width={250}>Atividade</TableCell>
+                            <TableCell width={250}>Transportadora</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -98,14 +81,12 @@ export const ListagemDeAtividades: React.FC = () => {
                         {rows.map(row => (
                             <TableRow key={row.id}>
                             <TableCell>
-                               <IconButton size = "small" onClick={() => navigate(`/atividades/detalhesDeAtividades/${row.id}`)}> 
+                               <IconButton size = "small" onClick={() => navigate(`/transportadoras/detalhesDeTransportadoras/${row.id}`)}> 
                                 <Icon> edit </Icon>
                                </IconButton>
-                               <IconButton size = "small" onClick={() => handleDelete(row.id)}> 
-                                <Icon> delete </Icon>
-                               </IconButton>
+                              
                             </TableCell>
-                            <TableCell>{row.atividade}</TableCell>
+                            <TableCell>{row.sufixo}</TableCell>
                             
                             
                         </TableRow>
@@ -146,6 +127,7 @@ export const ListagemDeAtividades: React.FC = () => {
                     </TableFooter>
                 </Table>
             </TableContainer>
+        
         </LayoutBase>
     )
 }

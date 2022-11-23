@@ -111,7 +111,7 @@ export default function MenuLista() {
                 
                 <ListItemLink 
                     label = 'Transportadoras' 
-                    to ='/fornecedores'
+                    to ='/transportadoras'
                     onClick = {smDown ? toggleDrawerOpen : undefined} 
                 />
 

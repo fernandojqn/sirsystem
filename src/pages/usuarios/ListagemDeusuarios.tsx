@@ -5,10 +5,10 @@ import { FerramentasDeListagem } from "../../shared/components"
 import { Environment } from "../../shared/enviroments";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBase } from "../../shared/layouts"
-import { AtividadesServices, IListagemAtividades } from "../../shared/services/api/atividades/AtividadesServices";
+import { UsuariosServices, IListagemUsuarios } from "../../shared/services/api/usuarios/UsuariosServices";
 
 
-export const ListagemDeAtividades: React.FC = () => {
+export const ListagemDeUsuarios: React.FC = () => {
     const navigate = useNavigate();
     
     // delay na escrita
@@ -28,18 +28,18 @@ export const ListagemDeAtividades: React.FC = () => {
 
 
     //Lista
-    const [rows, setRows] = useState<IListagemAtividades[]>([]); // guardar as informações da consulta
+    const [rows, setRows] = useState<IListagemUsuarios[]>([]); // guardar as informações da consulta
     const [totalCount, setTotalCount] = useState(0); //guardar o numero maximo da consulta
     const [isLoading, setIsLoading] = useState(true); //loading do carregamento da busca
 
 
-    //Puxa as Atividades
+    //Puxa os Usuarios
     useEffect(() => {
         setIsLoading(true);
 
         debounce(() => {
             // Chama a consulta e esperamos uma promessa 
-            AtividadesServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
+            UsuariosServices.getAll(pagina, busca) //(1 chama a primeira pagina e busca do usememo)
             .then((result) => { // .then espera a promessa chegar
                 setIsLoading(false); 
 
@@ -54,31 +54,14 @@ export const ListagemDeAtividades: React.FC = () => {
         })
     },[busca, pagina]);
 
-    const handleDelete = (id: number) => {
-        
-          AtividadesServices.deleteById(id)
-            .then(result => {
-              if (result instanceof Error) {
-                alert(result.message);
-              } else {
-                setRows(oldRows => [
-                  ...oldRows.filter(oldRow => oldRow.id !== id),
-                ]);
-                alert('Registro apagado com sucesso!');
-              }
-            });
-        
-      };
-
-
-
+    
     return (
         <LayoutBase 
-            titulo= 'Listagem de Clientes'
+            titulo= 'Usuários'
             barraDeFerramentas={(
                 <FerramentasDeListagem
-                textoDoBotaoNovo="Nova"
-                aoClicarNoBotaoNovo={() => navigate('/atividades/detalhesDeAtividades/novo')} 
+                textoDoBotaoNovo="Novo"
+                aoClicarNoBotaoNovo={() => navigate('/usuarios/detalhesDeUsuarios/novo')} 
                 mostrarInputBusca 
                 textoDaBusca={busca}
                 aoMudarTextoDaBusca={texto => setSearchParams({busca: texto, pagina: '1'}, {replace: true})}/>
@@ -98,15 +81,13 @@ export const ListagemDeAtividades: React.FC = () => {
                         {rows.map(row => (
                             <TableRow key={row.id}>
                             <TableCell>
-                               <IconButton size = "small" onClick={() => navigate(`/atividades/detalhesDeAtividades/${row.id}`)}> 
+                               <IconButton size = "small" onClick={() => navigate(`/usuarios/detalhesDeUsuarios/${row.id}`)}> 
                                 <Icon> edit </Icon>
                                </IconButton>
-                               <IconButton size = "small" onClick={() => handleDelete(row.id)}> 
-                                <Icon> delete </Icon>
-                               </IconButton>
+                               
                             </TableCell>
-                            <TableCell>{row.atividade}</TableCell>
-                            
+                            <TableCell>{row.nome}</TableCell>
+                            <TableCell>{row.login}</TableCell>
                             
                         </TableRow>
                         ))}
