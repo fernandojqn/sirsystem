@@ -4,17 +4,73 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { IVFormErrors, useVForm, VForm, VTextField } from "../../shared/forms";
 import { LayoutBase } from "../../shared/layouts"
-import { AtividadesServices } from "../../shared/services/api/atividades/AtividadesServices";
+import { EmpresasServices } from "../../shared/services/api/empresas/EmpresasServices";
 import * as yup from 'yup';
 
 
 interface IFormData {
-    atividade: string;
+    sufixo: string; nome: string; 
+    
+    documento: string; inscricao: string; ccm: string;
+    
+    contato: string; tel: string; cel: string; email: string; site: string;
+    
+    end: string; num: string; compl: string; bairro: string; cidade: string;
+    uf: string; cep: string; pais: string; muni: string;
+    
+    unidade: string; nomeUnidade: string; modeloCF: string; numSerie: string; obs: string;
+
+    codNatureza: string; modeloNF: string; serie: string; optSN: boolean;
+    aliqICMS: number; aliqCOFINS: number; aliqPIS: number; perfil: string;
+    
+    tipoRegime: string; criEscrit: string; aproCredito: string; tipoContri: string;
+    codEstruttura: string; codOperacao: string;
 }
 
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-    atividade: yup.string().required().min(3),
+    sufixo: yup.string().required().min(3),
+    nome: yup.string().notRequired().default(''), 
+    documento: yup.string().notRequired().default(''), 
+    inscricao: yup.string().notRequired().default(''), 
+    ccm: yup.string().notRequired().default(''),
     
+    contato: yup.string().notRequired().default(''), 
+    tel: yup.string().notRequired().default(''), 
+    cel: yup.string().notRequired().default(''), 
+    email: yup.string().email().notRequired().default(''), 
+    site: yup.string().notRequired().default(''),
+    
+    end: yup.string().notRequired().default(''), 
+    num: yup.string().notRequired().default(''), 
+    compl: yup.string().notRequired().default(''), 
+    bairro: yup.string().notRequired().default(''), 
+    cidade: yup.string().notRequired().default(''),
+    uf: yup.string().notRequired().default(''), 
+    cep: yup.string().notRequired().default(''), 
+    pais: yup.string().notRequired().default(''), 
+    muni: yup.string().notRequired().default(''),
+    
+    unidade: yup.string().notRequired().default(''), 
+    nomeUnidade: yup.string().notRequired().default(''), 
+    modeloCF: yup.string().notRequired().default(''), 
+    numSerie: yup.string().notRequired().default(''),
+    obs: yup.string().notRequired().default(''),
+
+    codNatureza: yup.string().notRequired().default(''), 
+    modeloNF: yup.string().notRequired().default(''), 
+    serie: yup.string().notRequired().default(''), 
+    optSN: yup.boolean().default(false),
+    aliqICMS: yup.number().notRequired().default(0), 
+    aliqCOFINS: yup.number().notRequired().default(0), 
+    aliqPIS: yup.number().notRequired().default(0), 
+    perfil: yup.string().notRequired().default(''),
+    
+    tipoRegime: yup.string().notRequired().default(''), 
+    criEscrit: yup.string().notRequired().default(''), 
+    aproCredito: yup.string().notRequired().default(''), 
+    tipoContri: yup.string().notRequired().default(''),
+    codEstruttura: yup.string().notRequired().default(''), 
+    codOperacao: yup.string().notRequired().default('')
 });
 
 export const DetalhesDeEmpresas: React.FC = () => {
@@ -24,33 +80,33 @@ export const DetalhesDeEmpresas: React.FC = () => {
     const navigate = useNavigate();
     const { id = 'novo' } = useParams<'id'>();
     const [isLoading, setIsLoading] = useState(false);
-    const [atividade, setAtividade] = useState('');
+    const [sufixo, setSufixo] = useState('');
 
-    //trazer dados do cliente
+    //trazer dados da empresa
     useEffect(() => {
         if (id !== 'novo') { // se for diferente de novo
             setIsLoading(true);
 
-            AtividadesServices.getById(Number(id))
+            EmpresasServices.getById(Number(id))
             .then((result) => {
                 setIsLoading(false);
 
                 if (result instanceof Error) {
                     alert(result.message);
-                    navigate('/atividades');
+                    navigate('/empresas');
                 } else {
-                    setAtividade(result.atividade);
+                    setSufixo(result.sufixo);
                     formRef.current?.setData(result);
                 }
             });
         } else { 
             formRef.current?.setData({
-                atividade: ''
+                sufixo: ''
             });
         }
     }, [id]);
 
-    // Salvando Clientes
+    // Salvando Empresa
     const handleSave = (dados: IFormData) => {
         //validação
         formValidationSchema.
@@ -60,7 +116,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
                 setIsLoading(true)
 
                 if (id === 'novo') {
-                    AtividadesServices.create(dadosValidados)
+                    EmpresasServices.create(dadosValidados)
                     .then((result) => {
                         setIsLoading(false)
 
@@ -68,41 +124,37 @@ export const DetalhesDeEmpresas: React.FC = () => {
                             alert(result.message);
                         } else {
                             if (isSaveAndClose()) {
-                                navigate('/atividades');   
+                                navigate('/empresas');   
                             } else {
-                                navigate(`/atividades/detalhesDeAtividades/${result}`);   
+                                navigate(`/empresas/detalhesDeEmpresas/${result}`);   
                             }
                             
                         }
                     })
                 }
                 else {
-                    AtividadesServices.updateById(Number(id), {id: Number(id), ...dadosValidados})
+                    EmpresasServices.updateById(Number(id), {id: Number(id), ...dadosValidados})
                     .then((result) => {
                         setIsLoading(false)
                         
                         if (result instanceof Error ) {
                             alert(result.message);
                         } else {
-                            setAtividade(dados.atividade);
+                            setSufixo(dados.sufixo);
                             if (isSaveAndClose()) {
-                                navigate('/atividades');   
+                                navigate('/empresas');   
                             }
                         }
                     });
                 }
             })
-
             .catch ((errors: yup.ValidationError) => {
                 const validationErrors: IVFormErrors = {};
 
                 errors.inner.forEach(error => {
                     if(!error.path) return;
-
                     validationErrors[error.path] = error.message;
-
                 });
-
                 formRef.current?.setErrors(validationErrors); // escrever texto especifico {nome: 'Precisa', email: 'necessita'}
             })
     }
@@ -110,7 +162,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
     // Deletar Cliente
     const handleDelete = (id: number) => {
                          
-        AtividadesServices.deleteById(id)
+        EmpresasServices.deleteById(id)
           .then(result => {
             
               if (result instanceof Error) {
@@ -128,7 +180,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
 
     return(
         <LayoutBase 
-            titulo= {id === 'novo' ? 'Nova atividade' : atividade}
+            titulo= {id === 'novo' ? 'Nova atividade' : sufixo}
             barraDeFerramentas = {<FerramentasDeDetalhes 
                 mostrarBotaoNovo = {id !== 'novo'}
                 mostrarBotaoApagar = {id !== 'novo'}
