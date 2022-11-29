@@ -272,8 +272,6 @@ export const DetalhesDeClientes: React.FC = () => {
     const handleEndEntrega = () => {
         console.log('OI')
         console.log(formRef.current?.getFieldValue('sufixo'));
-
-        
     };
 
 

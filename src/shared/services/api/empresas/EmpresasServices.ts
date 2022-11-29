@@ -18,6 +18,7 @@ export interface IDetalhesEmpresas {
     uf: string; cep: string; pais: string; muni: string;
     
     unidade: string; nomeUnidade: string; modeloCF: string; numSerie: string; obs: string;
+    obsFisco: string;
 
     codNatureza: string; modeloNF: string; serie: string; optSN: boolean;
     aliqICMS: number; aliqCOFINS: number; aliqPIS: number; perfil: string;
