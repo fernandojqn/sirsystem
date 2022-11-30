@@ -7,6 +7,8 @@ import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VNumericForma
 import * as yup from 'yup';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, MenuItem, Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
+import { VIMaskInput } from "../../shared/forms/components/VIMaskInput";
+
 
 
 // Itens do formulario
@@ -348,17 +350,16 @@ export const DetalhesDeClientes: React.FC = () => {
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={6} lg={5} xl={3}>
-                                <VTextField  name='contato' label="Contato" fullWidth disabled={isLoading} size="small"/>
+                                <VTextField name='contato' label="Contato" fullWidth disabled={isLoading} />
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='tel' label="Telefone" format="(##) #### ####"  
-                                                fullWidth placeholder="(11) 1111-1111" disabled={isLoading}/> 
+                                <VIMaskInput name='tel' label="telefone" mask="(00) 0000-0000" fullWidth disabled={isLoading} />
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='cel' label="Celular" format="(##) # #### ####"  
-                                                fullWidth placeholder="(11) 91111-1111" disabled={isLoading}/>
+                                <VPatternFormat name='cel' label="Celular"  format="(##) #####-#####"
+                                                fullWidth  disabled={isLoading}/>
                             </Grid>
                         </Grid>
             
@@ -386,7 +387,7 @@ export const DetalhesDeClientes: React.FC = () => {
                             </Grid> 
             
                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                <VTextField name='num' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                <VTextField name='num' label="Numero"  fullWidth disabled={isLoading} size="small"/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
@@ -416,7 +417,7 @@ export const DetalhesDeClientes: React.FC = () => {
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                <VPatternFormat name='cep' label="C.E.P."  format="#####-###" 
+                                <VPatternFormat name='cep' label="C.E.P." format="#####-###" mask="#####-###"
                                                 fullWidth disabled={isLoading} onBlur={checkCep}/>
                             </Grid>
             

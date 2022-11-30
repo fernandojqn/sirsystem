@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
-import { PatternFormatProps, PatternFormat } from 'react-number-format';
 import { useField } from '@unform/core';
+import { IMaskInput  } from 'react-imask';
+import { IMaskInputProps } from 'react-imask/dist/mixin';
 
 
-
-type TVTextFieldProps = Omit<PatternFormatProps, 'value'> & Omit<TextFieldProps, 'value'>  &  {
+type TVTextFieldProps = TextFieldProps & Omit<IMaskInputProps, 'value'> & {
   name: string;
 
   onValueChange?: (value: string) => void;
@@ -15,9 +15,9 @@ type TVTextFieldProps = Omit<PatternFormatProps, 'value'> & Omit<TextFieldProps,
  * - Para eventos normais use o `onChange`
  */
 
-export const VPatternFormat: React.FC<TVTextFieldProps> = ({ name, onValueChange, ...rest }) => {
+export const VIMaskInput: React.FC<TVTextFieldProps> = ({ name, onValueChange, ...rest }) => {
   const { fieldName, defaultValue, registerField, error } = useField(name);
-  const [value, setValue] = useState<string>(defaultValue);
+  const [value, setValue] = useState<string>(defaultValue );
 
 
   useEffect(() => {
@@ -35,19 +35,17 @@ export const VPatternFormat: React.FC<TVTextFieldProps> = ({ name, onValueChange
     
   };
 
-  //PatternFormat
+  //IMaskInput
   return (
-    <PatternFormat
+    <IMaskInput
       {...rest as any}
-      
-      size="small"
       customInput={TextField}
+      variant="outlined" 
 
       value={value}
       error={!!error}
       helperText={error}
-
-      onValueChange={({ value }) => handleChange(value)}
+      onValueChange={() => handleChange(value)}
     />
   );
 };
