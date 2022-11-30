@@ -5,10 +5,11 @@ import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
 import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VNumericFormat, VPatternFormat } from "../../shared/forms";
 import * as yup from 'yup';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, MenuItem, Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 
 
+// Itens do formulario
 interface IFormData {
     sufixo: string; nome: string; documento: string; inscricao: string; ccm: string;
     contato: string; tel: string; cel: string; email: string; site: string; 
@@ -30,7 +31,7 @@ interface IFormData {
     simplesNasc: string; retemISS: string;
 }
 
-
+// YUP validação do formulario
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     sufixo: yup.string().required().min(3),
     nome: yup.string().notRequired().default(''), 
@@ -96,6 +97,11 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     retemISS: yup.string().notRequired().default(''),
 });
 
+//Lista dos estados
+const estados = [{label: 'AC'}, {label: 'AL'}, {label: 'AP'}, {label: 'AM'}, {label: 'BA'}, {label: 'CE'}, {label: 'DF'}, {label: 'ES'},
+    {label: 'GO'}, {label: 'MA'}, {label: 'MT'}, {label: 'MS'}, {label: 'MG'}, {label: 'PA'}, {label: 'PB'}, {label: 'PR'}, {label: 'PE'},
+    {label: 'PI'}, {label: 'RJ'}, {label: 'RN'}, {label: 'RS'}, {label: 'RO'}, {label: 'RR'}, {label: 'SC'}, {label: 'SP'}, {label: 'SE'},
+    {label: 'TO'},]
 
 export const DetalhesDeClientes: React.FC = () => {
     // passar o submit para o botão salvar  
@@ -275,7 +281,7 @@ export const DetalhesDeClientes: React.FC = () => {
     };
 
 
-    // Retorna para tela  
+    // TELA  
     return(
         <LayoutBase 
             titulo= {id === 'novo' ? 'Novo cliente' : sufixo}
@@ -398,7 +404,13 @@ export const DetalhesDeClientes: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                            <VTextField name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
+                                <VTextField name='uf' label="UF" select value={estados} fullWidth disabled={isLoading} size="small">
+                                    {estados.map((option) => (
+                                        <MenuItem key={option.label} value={option.label}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </VTextField>
                             </Grid>
                         </Grid>
             
@@ -463,7 +475,13 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextField name='ufEnt' label="Estado" fullWidth disabled={isLoading} size="small"/>
+                                                <VTextField name='ufEnt' label="Estado" select value={estados} fullWidth disabled={isLoading} size="small">
+                                                    {estados.map((option) => (
+                                                        <MenuItem key={option.label} value={option.label}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </VTextField>
                                             </Grid>
                                         </Grid>
             
@@ -529,7 +547,13 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextField name='ufCor' label="Estado" fullWidth disabled={isLoading} size="small"/>
+                                                <VTextField name='ufCor' label="Estado" select value={estados} fullWidth disabled={isLoading} size="small">
+                                                    {estados.map((option) => (
+                                                        <MenuItem key={option.label} value={option.label}>
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </VTextField>
                                             </Grid>
                                         </Grid>
             

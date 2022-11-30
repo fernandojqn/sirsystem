@@ -40,7 +40,7 @@ export const VPatternFormat: React.FC<TVTextFieldProps> = ({ name, onValueChange
       {...rest as any}
       
       allowEmptyFormatting mask="_"
-      
+      size="small"
       customInput={TextField}
       value={value}
       error={!!error}
