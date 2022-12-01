@@ -8,6 +8,8 @@ import * as yup from 'yup';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { VIMaskInput } from "../../shared/forms/components/VIMaskInput";
+import { AutoCompleteAtividades } from "./components/AutoCompleteAtividades";
+import { AutoCompleteVendedores } from "./components/AutoCompleteVendedores";
 
 
 
@@ -25,9 +27,10 @@ interface IFormData {
     endCor: string; numCor: string; complCor: string; bairroCor: string; cidadeCor: string;
     ufCor: string; cepCor: string; paisCor: string; muniCor: string; 
 
-    ativ: string; vend: string; pag1: string; pag2: string; pag3: string; pag4: string; pag5: string; 
+    pag1: string; pag2: string; pag3: string; pag4: string; pag5: string; 
     pag6: string; desc1: string; desc2: string; desc3: string; obs: string; 
     
+    ativ: number; vend: number;
     cofins: number; pis: number; icms: number; ipi: number;
 
     simplesNasc: string; retemISS: string;
@@ -77,8 +80,8 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     paisCor: yup.string().notRequired().default(''),
     muniCor: yup.string().notRequired().default(''),
 
-    ativ: yup.string().notRequired().default(''), 
-    vend: yup.string().notRequired().default(''), 
+    ativ: yup.number().notRequired().default(0), 
+    vend: yup.number().notRequired().default(0), 
     pag1: yup.string().notRequired().default(''), 
     pag2: yup.string().notRequired().default(''), 
     pag3: yup.string().notRequired().default(''), 
@@ -141,9 +144,10 @@ export const DetalhesDeClientes: React.FC = () => {
                 endCor: '', numCor: '', complCor: '', bairroCor: '', cidadeCor: '',
                 ufCor: '', cepCor: '', paisCor: 'Brasil', muniCor: '',
 
-                ativ: '', vend: '', pag1: '', pag2: '', pag3: '', pag4: '', pag5: '', 
+                pag1: '', pag2: '', pag3: '', pag4: '', pag5: '', 
                 pag6: '', desc1: '', desc2: '', desc3: '', obs: '', 
     
+                ativ: undefined, vend: undefined,
                 cofins: 0, pis: 0, icms: 0, ipi: 0,
 
                 simplesNasc: 'nao', retemISS: 'nao'
@@ -568,11 +572,11 @@ export const DetalhesDeClientes: React.FC = () => {
                                     <Grid container direction="column" padding={2} spacing={2}>
                                         <Grid container item direction="row" spacing={2}>
                                             <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
-                                                <VTextField name='ativ' label="tipo de atividade" fullWidth disabled={isLoading} size="small"/>
+                                                <AutoCompleteAtividades  isExternalLoading={isLoading}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={3} lg={4} xl={2}>
-                                                <VTextField name='vend' label="Vendedor" fullWidth disabled={isLoading} size="small"/>
+                                                <AutoCompleteVendedores  isExternalLoading={isLoading}/>
                                             </Grid>
                                         </Grid>
             

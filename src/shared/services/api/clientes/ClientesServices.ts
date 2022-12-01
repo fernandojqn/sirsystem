@@ -21,9 +21,10 @@ export interface IDetalhesCliente {
     endCor: string; numCor: string; complCor: string; bairroCor: string; cidadeCor: string;
     ufCor: string; cepCor: string; paisCor: string; muniCor: string; 
 
-    ativ: string; vend: string; pag1: string; pag2: string; pag3: string; pag4: string; pag5: string; 
+    pag1: string; pag2: string; pag3: string; pag4: string; pag5: string; 
     pag6: string; desc1: string; desc2: string; desc3: string; obs: string; 
     
+    ativ: number; vend: number;
     cofins: number; pis: number; icms: number; ipi: number;
 
     simplesNasc: string; retemISS: string;
