@@ -24,6 +24,9 @@ export const AppRoutes = () => {
             <Route path='/fornecedores' element={<ListagemDeFornecedores/>}/>
             <Route path='/fornecedores/detalhesDeFornecedores/:id' element={<DetalhesDeFornecedores/>}/>
 
+            <Route path='/produtos' element={<h1>Listagem Produtos Produtos</h1>}/>
+            <Route path='/produtos/detalhesDeProdutos/:id' element={<h1>Detalhes Produtos</h1>}/>
+
             <Route path='/transportadoras' element={<ListagemDeTransportadoras/>}/>
             <Route path='/transportadoras/detalhesDeTransportadoras/:id' element={<DetalhesDeTransportadoras/>}/>
 

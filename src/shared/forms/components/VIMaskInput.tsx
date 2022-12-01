@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 import { useField } from '@unform/core';
 import { IMaskInput  } from 'react-imask';
-import { IMaskInputProps } from 'react-imask/dist/mixin';
+import { IMaskInputProps, IMaskMixinProps } from 'react-imask/dist/mixin';
 
 
-type TVTextFieldProps = TextFieldProps & Omit<IMaskInputProps, 'value'> & {
+type TVTextFieldProps = TextFieldProps & Omit<IMaskInputProps, 'value'> &  IMaskMixinProps & {
   name: string;
 
   onValueChange?: (value: string) => void;
@@ -41,6 +41,7 @@ export const VIMaskInput: React.FC<TVTextFieldProps> = ({ name, onValueChange, .
       {...rest as any}
       customInput={TextField}
       variant="outlined" 
+      unmask={true}
 
       value={value}
       error={!!error}

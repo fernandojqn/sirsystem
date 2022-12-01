@@ -1,8 +1,8 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, LinearProgress, MenuItem, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components"
-import { IVFormErrors, useVForm, VForm, VNumericFormat, VPatternFormat, VRadioButton2, VTextField } from "../../shared/forms";
+import { IVFormErrors, useVForm, VForm, VNumericFormat, VPatternFormat, VRadioButton2, VTextField, VTextFieldUF } from "../../shared/forms";
 import { LayoutBase } from "../../shared/layouts"
 import { EmpresasServices } from "../../shared/services/api/empresas/EmpresasServices";
 import * as yup from 'yup';
@@ -75,6 +75,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     codEstruttura: yup.string().notRequired().default(''), 
     codOperacao: yup.string().notRequired().default('')
 });
+
 
 export const DetalhesDeEmpresas: React.FC = () => {
     // passar o submit para o botão salvar  
@@ -172,7 +173,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
               alert(result.message);
             } else {
               alert('Registro apagado com sucesso!');
-              navigate('/atividades');
+              navigate('/empresas');
             }
           });
       
@@ -196,7 +197,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
 
     return(
         <LayoutBase 
-            titulo= {id === 'novo' ? 'Nova atividade' : sufixo}
+            titulo= {id === 'novo' ? 'Nova empresa' : sufixo}
             barraDeFerramentas = {<FerramentasDeDetalhes 
                 mostrarBotaoNovo = {id !== 'novo'}
                 mostrarBotaoApagar = {id !== 'novo'}
@@ -204,8 +205,8 @@ export const DetalhesDeEmpresas: React.FC = () => {
                 aoClicarBotaosalvar = {save}
                 aoClicarBotaoSalvarEVoltar = {saveAndClose}
                 aoClicarBotaoApagar = {() => handleDelete(Number(id))}
-                aoClicarBotaoNovo = {() => navigate('/atividades/detalhesDeAtividades/novo')}
-                aoClicarBotaoVoltar = {() => navigate('/atividades')}
+                aoClicarBotaoNovo = {() => navigate('/empresas/detalhesDeEmpresas/novo')}
+                aoClicarBotaoVoltar = {() => navigate('/empresas')}
         />}>
 
         {/* Formulario*/}
@@ -316,7 +317,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                            <VTextField name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
+                                <VTextFieldUF name='uf' label="UF" fullWidth disabled={isLoading} size="small" />
                             </Grid>
                         </Grid>
             

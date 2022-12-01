@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
-import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VNumericFormat, VPatternFormat } from "../../shared/forms";
+import { VForm, useVForm, IVFormErrors, VTextField, VNumericFormat, VPatternFormat, VTextFieldUF } from "../../shared/forms";
 import * as yup from 'yup';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { VendedoresServices } from "../../shared/services/api/vendedores/VendedoresServices";
 
@@ -295,7 +295,7 @@ export const DetalhesDeVendedores: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                            <VTextField name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
+                            <VTextFieldUF name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
                             </Grid>
                         </Grid>
             

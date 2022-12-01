@@ -1,5 +1,9 @@
 /**
- * Radio Button 2 opções
+ * Radio Button 2 opções, tag:
+ *  <Grid item xs={6} sm={6} md={6} lg={6} xl={6} >
+ *      <Typography marginRight={1}> Optante pelo Simples Nacional: </Typography>
+        <VRadioButton2 name="simplesNasc" />
+    </Grid>
  */
 
 import { FormControl, FormControlLabel, Radio, RadioGroup, TextField, TextFieldProps } from "@mui/material";

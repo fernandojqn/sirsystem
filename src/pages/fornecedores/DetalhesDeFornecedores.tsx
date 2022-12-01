@@ -1,4 +1,4 @@
-import { Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { Box, Checkbox, Grid, LinearProgress, MenuItem, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components";
@@ -6,6 +6,7 @@ import { IVFormErrors, useVForm, VForm, VPatternFormat, VTextField } from "../..
 import { LayoutBase } from "../../shared/layouts"
 import { FornecedoresServices } from "../../shared/services/api/fornecedores/FornecedoresServices";
 import * as yup from 'yup';
+import { VTextFieldUF } from "../../shared/forms/components/VTextFieldUF";
 
 interface IFormData {
     sufixo: string; nome: string; documento: string; inscricao: string; ccm: string;
@@ -307,7 +308,7 @@ export const DetalhesDeFornecedores: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                            <VTextField name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
+                                <VTextFieldUF name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
                             </Grid>
                         </Grid>
             

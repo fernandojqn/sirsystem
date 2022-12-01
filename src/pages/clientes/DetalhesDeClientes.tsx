@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
-import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VNumericFormat, VPatternFormat } from "../../shared/forms";
+import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VNumericFormat, VPatternFormat, VTextFieldUF } from "../../shared/forms";
 import * as yup from 'yup';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, MenuItem, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { VIMaskInput } from "../../shared/forms/components/VIMaskInput";
 
@@ -99,11 +99,6 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     retemISS: yup.string().notRequired().default(''),
 });
 
-//Lista dos estados
-const estados = [{label: 'AC'}, {label: 'AL'}, {label: 'AP'}, {label: 'AM'}, {label: 'BA'}, {label: 'CE'}, {label: 'DF'}, {label: 'ES'},
-    {label: 'GO'}, {label: 'MA'}, {label: 'MT'}, {label: 'MS'}, {label: 'MG'}, {label: 'PA'}, {label: 'PB'}, {label: 'PR'}, {label: 'PE'},
-    {label: 'PI'}, {label: 'RJ'}, {label: 'RN'}, {label: 'RS'}, {label: 'RO'}, {label: 'RR'}, {label: 'SC'}, {label: 'SP'}, {label: 'SE'},
-    {label: 'TO'},]
 
 export const DetalhesDeClientes: React.FC = () => {
     // passar o submit para o botão salvar  
@@ -405,13 +400,7 @@ export const DetalhesDeClientes: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                                <VTextField name='uf' label="UF" select value={estados} fullWidth disabled={isLoading} size="small">
-                                    {estados.map((option) => (
-                                        <MenuItem key={option.label} value={option.label}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </VTextField>
+                                <VTextFieldUF name='uf' label="UF" fullWidth disabled={isLoading} size="small" />
                             </Grid>
                         </Grid>
             
@@ -476,13 +465,8 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextField name='ufEnt' label="Estado" select value={estados} fullWidth disabled={isLoading} size="small">
-                                                    {estados.map((option) => (
-                                                        <MenuItem key={option.label} value={option.label}>
-                                                            {option.label}
-                                                        </MenuItem>
-                                                    ))}
-                                                </VTextField>
+                                                <VTextFieldUF name='ufEnt' label="Estado" fullWidth disabled={isLoading} size="small" />
+                                                    
                                             </Grid>
                                         </Grid>
             
@@ -548,13 +532,8 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextField name='ufCor' label="Estado" select value={estados} fullWidth disabled={isLoading} size="small">
-                                                    {estados.map((option) => (
-                                                        <MenuItem key={option.label} value={option.label}>
-                                                            {option.label}
-                                                        </MenuItem>
-                                                    ))}
-                                                </VTextField>
+                                                <VTextFieldUF name='ufCor' label="Estado" fullWidth disabled={isLoading} size="small" />
+                                                    
                                             </Grid>
                                         </Grid>
             

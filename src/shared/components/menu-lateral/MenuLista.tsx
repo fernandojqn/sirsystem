@@ -1,5 +1,5 @@
-import { AppRegistrationRounded, ExpandLess, ExpandMore, Laptop, PermDataSetting, StarBorder, Summarize } from "@mui/icons-material";
-import { Box, Collapse, Icon, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, useMediaQuery, useTheme } from "@mui/material";
+import { AppRegistrationRounded, ExpandLess, ExpandMore, Laptop, Summarize } from "@mui/icons-material";
+import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 import { useDrawerContext } from "../../contexts";
