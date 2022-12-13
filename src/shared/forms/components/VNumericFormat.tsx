@@ -41,6 +41,9 @@ export const VNumericFormat: React.FC<TVTextFieldProps> = ({ name, onValueChange
     <NumericFormat
       {...rest as any}
 
+      
+
+      size='small'
       customInput={TextField}
       value={value}
       error={!!error}

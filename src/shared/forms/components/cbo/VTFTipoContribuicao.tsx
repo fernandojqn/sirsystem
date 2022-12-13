@@ -8,16 +8,14 @@ import { useField } from '@unform/core';
  */
 
 //Lista dos estados
-const estados = [{label: 'AC'}, {label: 'AL'}, {label: 'AP'}, {label: 'AM'}, {label: 'BA'}, {label: 'CE'}, {label: 'DF'}, {label: 'ES'},
-    {label: 'GO'}, {label: 'MA'}, {label: 'MT'}, {label: 'MS'}, {label: 'MG'}, {label: 'PA'}, {label: 'PB'}, {label: 'PR'}, {label: 'PE'},
-    {label: 'PI'}, {label: 'RJ'}, {label: 'RN'}, {label: 'RS'}, {label: 'RO'}, {label: 'RR'}, {label: 'SC'}, {label: 'SP'}, {label: 'SE'},
-    {label: 'TO'},]
+const itens = [{label: "Selecionar:"}, {label: "1 - Apuração da contribuição exclusamente a alíquota básica"},
+  {label: "2 - Apuração da contribuição a alíquotas especificas"}]
 
 
 type TVTextFieldProps = TextFieldProps & {
   name: string;
 }
-export const VTextFieldUF: React.FC<TVTextFieldProps> = ({ name, ...rest }) => {
+export const VTFTipoContribuicao: React.FC<TVTextFieldProps> = ({ name, ...rest }) => {
   const { fieldName, registerField, defaultValue, error, clearError } = useField(name);
 
   const [value, setValue] = useState(defaultValue || '');
@@ -46,7 +44,7 @@ export const VTextFieldUF: React.FC<TVTextFieldProps> = ({ name, ...rest }) => {
       onKeyDown={(e) => { error && clearError(); rest.onKeyDown?.(e); }}
     >
       
-      {estados.map((option) => (
+      {itens.map((option) => (
           <MenuItem key={option.label} value={option.label}>
             {option.label}
           </MenuItem>

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
-import { VForm, useVForm, IVFormErrors, VTextField, VNumericFormat, VPatternFormat, VTextFieldUF } from "../../shared/forms";
+import { VForm, useVForm, IVFormErrors, VTextField, VNumericFormat, VTFCriEscrituracao, VPatternFormat } from "../../shared/forms";
 import * as yup from 'yup';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
@@ -230,7 +230,7 @@ export const DetalhesDeVendedores: React.FC = () => {
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='inscricao' label="Inscrição Estadual / R.G." placeholder="só digite os numeros" fullWidth disabled={isLoading} size="small"/>
+                            <VNumericFormat name='inscricao' label="Inscrição Estadual / R.G." fullWidth disabled={isLoading}/>
                             </Grid>
                         </Grid>
             
@@ -247,13 +247,13 @@ export const DetalhesDeVendedores: React.FC = () => {
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='tel' label="Telefone" format="(##) #### ####"  
-                                                fullWidth placeholder="(11) 1111-1111" disabled={isLoading}/> 
+                                <VPatternFormat name='tel' label="telefone" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='cel' label="Celular" format="(##) # #### ####"  
-                                                fullWidth placeholder="(11) 91111-1111" disabled={isLoading}/>
+                                <VPatternFormat name="cel" label="Celular" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
                         </Grid>
             
@@ -277,7 +277,7 @@ export const DetalhesDeVendedores: React.FC = () => {
                             </Grid> 
             
                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                <VTextField name='num' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                <VNumericFormat name='num' label="Numero" fullWidth disabled={isLoading}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
@@ -295,14 +295,14 @@ export const DetalhesDeVendedores: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                            <VTextFieldUF name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
+                            <VTFCriEscrituracao name='uf' label="UF" fullWidth disabled={isLoading} size="small"/>
                             </Grid>
                         </Grid>
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                <VPatternFormat name='cep' label="C.E.P."  format="#####-###" 
-                                                fullWidth disabled={isLoading} onBlur={checkCep}/>
+                                <VPatternFormat name='cep' label="C.E.P." format="#####-###" disabled={isLoading}
+                                     valueIsNumericString={true} onBlur={checkCep}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>

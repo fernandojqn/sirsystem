@@ -2,11 +2,12 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, LinearProgres
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components"
-import { IVFormErrors, useVForm, VForm, VNumericFormat, VPatternFormat, VRadioButton2, VTextField, VTextFieldUF } from "../../shared/forms";
+import { IVFormErrors, useVForm, VForm, VNumericFormat, VPatternFormat, VRBjuridico, VTextField, VTFApropCredito, VTFCodEstrutura, VTFCodNatureza, VTFCodOperacao, VTFCriEscrituracao, VTFTipoContribuicao, VTFTipoRegime } from "../../shared/forms";
 import { LayoutBase } from "../../shared/layouts"
 import { EmpresasServices } from "../../shared/services/api/empresas/EmpresasServices";
 import * as yup from 'yup';
 import { ExpandMore } from "@mui/icons-material";
+
 
 
 interface IFormData {
@@ -244,11 +245,11 @@ export const DetalhesDeEmpresas: React.FC = () => {
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='inscricao' label="Inscrição Estadual / R.G." placeholder="só digite os numeros" fullWidth disabled={isLoading} size="small"/>
+                                <VNumericFormat name='inscricao' label="Inscrição Estadual / R.G." fullWidth disabled={isLoading}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='ccm' label="C.C.M." fullWidth placeholder="só digite os numeros" disabled={isLoading} size="small"/>
+                                <VNumericFormat name='ccm' label="C.C.M." fullWidth disabled={isLoading}/>
                             </Grid>
                         </Grid>
             
@@ -265,13 +266,13 @@ export const DetalhesDeEmpresas: React.FC = () => {
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='tel' label="Telefone" format="(##) #### ####"  
-                                                fullWidth placeholder="(11) 1111-1111" disabled={isLoading}/> 
+                                <VPatternFormat name='tel' label="telefone" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='cel' label="Celular" format="(##) # #### ####"  
-                                                fullWidth placeholder="(11) 91111-1111" disabled={isLoading}/>
+                                <VPatternFormat name="cel" label="Celular" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
                         </Grid>
             
@@ -299,7 +300,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
                             </Grid> 
             
                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                <VTextField name='num' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                <VNumericFormat name='num' label="Numero" fullWidth disabled={isLoading}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
@@ -317,14 +318,14 @@ export const DetalhesDeEmpresas: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                                <VTextFieldUF name='uf' label="UF" fullWidth disabled={isLoading} size="small" />
+                                <VTFCriEscrituracao name='uf' label="UF" fullWidth disabled={isLoading} size="small" />
                             </Grid>
                         </Grid>
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                <VPatternFormat name='cep' label="C.E.P."  format="#####-###" 
-                                                fullWidth disabled={isLoading} onBlur={checkCep}/>
+                                <VPatternFormat name='cep' label="C.E.P." format="#####-###" disabled={isLoading}
+                                    valueIsNumericString={true} onBlur={checkCep}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
@@ -405,7 +406,7 @@ export const DetalhesDeEmpresas: React.FC = () => {
                                     <Grid container direction="column" padding={2} spacing={2}>
                                         <Grid container item direction="row" spacing={2}>
                                             <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                                                <VTextField name='codNatureza' label="Cod. Natureza" fullWidth disabled={isLoading} size="small"/>
+                                                <VTFCodNatureza name='codNatureza' label="Cod. Natureza" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
@@ -420,12 +421,12 @@ export const DetalhesDeEmpresas: React.FC = () => {
                                         <Grid container item spacing={2}>
                                             <Grid item xs={6} sm={6} md={6} lg={6} xl={6} >
                                                 <Typography marginRight={1}> Optante pelo Simples Nacional: </Typography>
-                                                <VRadioButton2 name="simplesNasc" />
+                                                <VRBjuridico name="simplesNasc" />
                                             </Grid>
 
                                             <Grid item xs={6} sm={6} md={6} lg={6} xl={6} >
                                                 <Typography marginRight={1}> Perfil: </Typography>
-                                                <VRadioButton2 name="simplesNasc" />
+                                                <VRBjuridico name="perfil" />
                                             </Grid>
                                         </Grid>
             
@@ -445,29 +446,29 @@ export const DetalhesDeEmpresas: React.FC = () => {
 
                                         <Grid container item direction="row" spacing={2}>
                                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                                <VTextField name='tipoRegime' label="Tipo do Regime" fullWidth disabled={isLoading} size="small"/>
+                                                <VTFTipoRegime name='tipoRegime' label="Tipo do Regime" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                                <VTextField name='criEscrit' label="Critério de escritura" fullWidth disabled={isLoading} size="small"/>
+                                                <VTFCriEscrituracao name='criEscrit' label="Critério de escritura" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                                <VTextField name='aproCredito' label="Apropriação de crédito" fullWidth disabled={isLoading} size="small"/>
+                                                <VTFApropCredito name='aproCredito' label="Apropriação de crédito" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
                                         </Grid>
 
                                         <Grid container item direction="row" spacing={2}>
                                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                                <VTextField name='tipoContri' label="Tipo de contribuição" fullWidth disabled={isLoading} size="small"/>
+                                                <VTFTipoContribuicao name='tipoContri' label="Tipo de contribuição" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                                <VTextField name='codEstruttura' label="Cod de Estrutura" fullWidth disabled={isLoading} size="small"/>
+                                                <VTFCodEstrutura name='codEstruttura' label="Cod de Estrutura" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                                <VTextField name='codOperacao' label="Cod. nº operação" fullWidth disabled={isLoading} size="small"/>
+                                                <VTFCodOperacao name='codOperacao' label="Cod. nº operação" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
                                         </Grid>
                                     </Grid>

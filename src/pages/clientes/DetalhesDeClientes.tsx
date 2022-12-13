@@ -1,13 +1,14 @@
-import { useEffect,  useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { FerramentasDeDetalhes } from "../../shared/components"
 import { LayoutBase } from "../../shared/layouts"
 import { ClientesServices } from "../../shared/services/api/clientes/ClientesServices";
-import { VForm, useVForm, IVFormErrors, VTextField, VRadioButton2, VNumericFormat, VPatternFormat, VTextFieldUF } from "../../shared/forms";
+import { VForm, useVForm, IVFormErrors, VTextField, VNumericFormat, VTFEstados, VPatternFormat, VRadioButton2, VTFTipoEmpresa} from "../../shared/forms";
 import * as yup from 'yup';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Checkbox, FormControlLabel, Grid, LinearProgress, 
+         MenuItem, 
+         Paper, Typography } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { VIMaskInput } from "../../shared/forms/components/VIMaskInput";
 import { AutoCompleteAtividades } from "./components/AutoCompleteAtividades";
 import { AutoCompleteVendedores } from "./components/AutoCompleteVendedores";
 
@@ -15,7 +16,8 @@ import { AutoCompleteVendedores } from "./components/AutoCompleteVendedores";
 
 // Itens do formulario
 interface IFormData {
-    sufixo: string; nome: string; documento: string; inscricao: string; ccm: string;
+    sufixo: string; nome: string; 
+    tipoEmpresa: string; documento: string; inscricao: string; ccm: string;
     contato: string; tel: string; cel: string; email: string; site: string; 
 
     end: string; num: string; compl: string; bairro: string; cidade: string;
@@ -36,10 +38,13 @@ interface IFormData {
     simplesNasc: string; retemISS: string;
 }
 
+
 // YUP validação do formulario
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     sufixo: yup.string().required().min(3),
     nome: yup.string().notRequired().default(''), 
+    
+    tipoEmpresa: yup.string().notRequired().default(''),
     documento: yup.string().notRequired().default(''),
     inscricao: yup.string().notRequired().default(''),
     ccm: yup.string().notRequired().default(''),
@@ -102,16 +107,47 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
     retemISS: yup.string().notRequired().default(''),
 });
 
+// Selects
+const itens = [{label: 'Jurídica'}, {label: 'Física'}]
 
 export const DetalhesDeClientes: React.FC = () => {
     // passar o submit para o botão salvar  
     const  {formRef, save, saveAndClose, isSaveAndClose } = useVForm();
-
     const navigate = useNavigate();
     const { id = 'novo' } = useParams<'id'>();
     const [isLoading, setIsLoading] = useState(false);
     const [sufixo, setSufixo] = useState('');
+
+    //O mesmo endereço
+    const [entrega, setEntrega] = useState<boolean>(false);
+    const [corresp, setCorresp] = useState<boolean>(false);
+    const [acdEntrega, setAcdEntrega] = useState<boolean>(false);
+    const [acdCorresp, setAcdCorresp] = useState<boolean>(false);
     
+    const handleEndEntrega = () => {
+        if  (entrega === false && acdEntrega === true) {
+            setAcdEntrega(false);           
+        } else if (entrega === false && acdEntrega === false) {
+            setEntrega(true);
+            setAcdEntrega(true);
+        } else if (entrega === true ) {
+            setEntrega(false);
+            setAcdEntrega(true); 
+        }
+    };
+
+    const handleEndCorresp = () => {
+        if  (corresp === false && acdCorresp === true) {
+            setAcdCorresp(false);           
+        } else if (corresp === false && acdCorresp === false) {
+            setCorresp(true);
+            setAcdCorresp(true);
+        } else if (corresp === true ) {
+            setCorresp(false);
+            setAcdCorresp(true); 
+        }
+    };
+
     
     //trazer dados do cliente
     useEffect(() => {
@@ -158,14 +194,24 @@ export const DetalhesDeClientes: React.FC = () => {
 
     // Salvando Clientes
     const handleSave = (dados: IFormData) => {
-        
+        setIsLoading(true);
+        if (entrega === true) { // O mesmo endereço na entrega
+            dados.endEnt = dados.end; dados.numEnt = dados.num; dados.complEnt = dados.compl; dados.bairroEnt = dados.bairro;
+            dados.cidadeEnt = dados.cidade; dados.ufEnt = dados.uf; dados.cepEnt = dados.cep; dados.paisEnt = dados.pais;
+            dados.muniEnt = dados.muni;
+        }
+
+        if (entrega === true) { // O mesmo endereço na correspondencia
+            dados.endCor = dados.end; dados.numCor = dados.num; dados.complCor = dados.compl; dados.bairroCor = dados.bairro;
+            dados.cidadeCor = dados.cidade; dados.ufCor = dados.uf; dados.cepCor = dados.cep; dados.paisCor = dados.pais;
+            dados.muniCor = dados.muni;
+        }
+
         //validação
         formValidationSchema.
             validate(dados, {abortEarly: false}) //abortEarly:false valida todos os campos
             .then((dadosValidados) => {
                 
-                setIsLoading(true)
-
                 if (id === 'novo') {
                     ClientesServices.create(dadosValidados)
                     .then((result) => {
@@ -191,7 +237,7 @@ export const DetalhesDeClientes: React.FC = () => {
                         if (result instanceof Error ) {
                             alert(result.message);
                         } else {
-                            setSufixo(dados.sufixo);
+                            setSufixo(dados.sufixo); //meu
                             if (isSaveAndClose()) {
                                 navigate('/clientes');   
                             }
@@ -231,7 +277,7 @@ export const DetalhesDeClientes: React.FC = () => {
         
     };
 
-
+    
     //CEP
     const checkCep = (e: { target: { value: any; }; }) => {
         const cep = e.target.value.replace(/\D/g, '');
@@ -274,13 +320,6 @@ export const DetalhesDeClientes: React.FC = () => {
                     formRef.current?.setFieldValue('paisCor', 'Brasil');
                 })
     }
-
-    //O mesmo Entrega
-    const handleEndEntrega = () => {
-        console.log('OI')
-        console.log(formRef.current?.getFieldValue('sufixo'));
-    };
-
 
     // TELA  
     return(
@@ -327,16 +366,22 @@ export const DetalhesDeClientes: React.FC = () => {
                         </Grid>
                 
                         <Grid container item direction="row" spacing={2}>
-                            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='documento' fullWidth placeholder="só digite os numeros"  disabled={isLoading} size="small" />
+                            <Grid item xs={12} sm={12} md={2} lg={1.4} xl={1.4}>
+                                <VTFTipoEmpresa name='tipoEmpresa' label="Pessoa" select fullWidth disabled={isLoading} size="small" />
+                                
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+                                <VPatternFormat name='documeto' valueIsNumericString={true} disabled={isLoading} 
+                                    label = {formRef.current?.getFieldValue('tipoEmpresa') === 'Jurídica' ? "C.N.P.J." : "C.P.F."}
+                                    format = {formRef.current?.getFieldValue('tipoEmpresa') === 'Jurídica' ? '##.###.###/####-##' : '###.###.###-##'}/>
                             </Grid>
             
-                            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='inscricao' label="Inscrição Estadual / R.G." placeholder="só digite os numeros" fullWidth disabled={isLoading} size="small"/>
+                            <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+                                <VNumericFormat name='inscricao' label="Inscrição Estadual / R.G."  disabled={isLoading}/>
                             </Grid>
             
-                            <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='ccm' label="C.C.M." fullWidth placeholder="só digite os numeros" disabled={isLoading} size="small"/>
+                            <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+                                <VNumericFormat name='ccm' label="C.C.M."  disabled={isLoading}/>
                             </Grid>
                         </Grid>
             
@@ -349,16 +394,17 @@ export const DetalhesDeClientes: React.FC = () => {
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={6} lg={5} xl={3}>
-                                <VTextField name='contato' label="Contato" fullWidth disabled={isLoading} />
+                                <VTextField name='contato' label="Contato" fullWidth disabled={isLoading} size='small'/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VIMaskInput name='tel' label="telefone" mask="(00) 0000-0000" fullWidth disabled={isLoading} />
+                                <VPatternFormat name='tel' label="telefone" format="(##) ####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='cel' label="Celular"  format="(##) #####-#####"
-                                                fullWidth  disabled={isLoading}/>
+                                <VPatternFormat name="cel" label="Celular" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
                         </Grid>
             
@@ -386,7 +432,7 @@ export const DetalhesDeClientes: React.FC = () => {
                             </Grid> 
             
                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                <VTextField name='num' label="Numero"  fullWidth disabled={isLoading} size="small"/>
+                                <VNumericFormat name='num' label="Numero" fullWidth disabled={isLoading}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
@@ -404,14 +450,14 @@ export const DetalhesDeClientes: React.FC = () => {
                             </Grid>
                         
                             <Grid item xs={12} sm={4} md={2} lg={2} xl={2}>
-                                <VTextFieldUF name='uf' label="UF" fullWidth disabled={isLoading} size="small" />
+                                <VTFEstados name='uf' label="UF" fullWidth disabled={isLoading} size="small" />
                             </Grid>
                         </Grid>
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                <VPatternFormat name='cep' label="C.E.P." format="#####-###" mask="#####-###"
-                                                fullWidth disabled={isLoading} onBlur={checkCep}/>
+                                <VPatternFormat name='cep' label="C.E.P." format="#####-###" disabled={isLoading}
+                                    valueIsNumericString={true} onBlur={checkCep}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
@@ -426,21 +472,24 @@ export const DetalhesDeClientes: React.FC = () => {
             
                         {/*End de Entrega*/}
                         <Grid item direction="row"  marginTop={1} marginLeft={0.4} xs={12} >
-                            <Accordion expanded={true} > 
-                                <AccordionSummary expandIcon={<ExpandMore />} >
+                            <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
+                                <FormControlLabel control={
+                                    <Checkbox defaultChecked name="cbxEndEntrega" 
+                                              onClick={handleEndEntrega} 
+                                              checked={entrega}
+                                    />} 
+                                    label="O mesmo endereço" />
+                            </Grid>
+
+                            <Accordion disabled={entrega} expanded={acdEntrega} onClick={handleEndEntrega}> 
+                                <AccordionSummary expandIcon={<ExpandMore />}>
                                     <Grid container item direction="row" component={Box} flex={1} display="flex"  >
                                         <Grid item>
                                             <Typography variant="h5">
                                                 Endereço de entrega
                                             </Typography>
                                         </Grid>
-                                        <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
-                                            <Checkbox name="cbxEndEntrega" onClick={handleEndEntrega}/>
-            
-                                            <Typography >
-                                                o mesmo do endereço
-                                            </Typography>
-                                        </Grid>
+                                        
                                     </Grid>
                                 </AccordionSummary>
                                 <AccordionDetails >
@@ -451,7 +500,7 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextField name='numEnt' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                            <VNumericFormat name='numEnt' label="Numero" fullWidth disabled={isLoading}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
@@ -469,7 +518,7 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextFieldUF name='ufEnt' label="Estado" fullWidth disabled={isLoading} size="small" />
+                                                <VTFEstados name='ufEnt' label="Estado" fullWidth disabled={isLoading} size="small" />
                                                     
                                             </Grid>
                                         </Grid>
@@ -477,7 +526,8 @@ export const DetalhesDeClientes: React.FC = () => {
                                         <Grid container item direction="row" spacing={2}>
                                             
                                             <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                                <VTextField name='cepEnt' label="C.E.P." fullWidth disabled={isLoading} size="small" onBlur={checkCepEnt}/>
+                                            <VPatternFormat name='cepEnt' label="C.E.P." format="#####-###" disabled={isLoading}
+                                                valueIsNumericString={true} onBlur={checkCepEnt}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
@@ -495,19 +545,24 @@ export const DetalhesDeClientes: React.FC = () => {
             
                         {/*End de Correspondencia*/}
                         <Grid item direction="row"  marginTop={1} marginLeft={0.4} xs={12} >
-                            <Accordion>
+                            <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
+                                <FormControlLabel control={
+                                    <Checkbox defaultChecked name="cbxEndCorresp" 
+                                              onClick={handleEndCorresp} 
+                                              checked={corresp}
+                                    />} 
+                                    label="O mesmo endereço" />
+                            </Grid>
+
+                            <Accordion disabled={corresp} expanded={acdCorresp} onClick={handleEndCorresp}> 
                                 <AccordionSummary expandIcon={<ExpandMore />} >
                                     <Grid container item direction="row" component={Box} flex={1} display="flex"  >
                                         <Grid item>
                                             <Typography variant="h5">
-                                                Endereço de correspondencia
+                                                Endereço de Correspondencia
                                             </Typography>
                                         </Grid>
-                                        <Grid item flex={2} display="flex" alignItems="center" justifyContent="end" marginRight={2}>
-                                            <Typography >
-                                                <Checkbox/> o mesmo do endereço
-                                            </Typography>
-                                        </Grid>
+                                        
                                     </Grid>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -518,7 +573,7 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextField name='numCor' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                            <VNumericFormat name='numCor' label="Numero" fullWidth disabled={isLoading}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
@@ -536,7 +591,7 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                                <VTextFieldUF name='ufCor' label="Estado" fullWidth disabled={isLoading} size="small" />
+                                                <VTFEstados name='ufCor' label="Estado" fullWidth disabled={isLoading} size="small" />
                                                     
                                             </Grid>
                                         </Grid>
@@ -544,7 +599,8 @@ export const DetalhesDeClientes: React.FC = () => {
                                         <Grid container item direction="row" spacing={2}>
                                             
                                             <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                                <VTextField name='cepCor' label="C.E.P." fullWidth disabled={isLoading} size="small" onBlur={checkCepCor}/>
+                                            <VPatternFormat name='cepCor' label="C.E.P." format="#####-###" disabled={isLoading}
+                                                valueIsNumericString={true} onBlur={checkCepCor}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>
@@ -580,51 +636,60 @@ export const DetalhesDeClientes: React.FC = () => {
                                             </Grid>
                                         </Grid>
             
-                                        <Grid container item direction="row" spacing={2} alignItems="center">
-                                            <Grid item xs={12} sm={12} md={2} lg={5} xl={3}>
-                                                <Typography> Condições de Pagamentos: </Typography>
+                                        <Grid container item direction="row" spacing={1} alignItems="center">
+                                            <Grid item xs={12} sm={12} md={2} lg={3} xl={3}>
+                                                <Typography> Condições de Pagamentos:</Typography>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
                                                 <VTextField name='pag1' label="1º condição" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
                                                 <VTextField name='pag2' label="2ª condição" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
                                                 <VTextField name='pag3' label="3º condição" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
                                                 <VTextField name='pag4' label="4º condição" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
                                                 <VTextField name='pag5' label="5º condição" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
                                                 <VTextField name='pag6' label="6º condição" fullWidth disabled={isLoading} size="small"/>
                                             </Grid>
                                         </Grid>
             
                                         <Grid container item direction="row" spacing={2} alignItems="center">
-                                            <Grid item xs={12} sm={12} md={2} lg={5} xl={3}>
+                                            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
                                                 <Typography> Desconto: </Typography>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                                <VNumericFormat name='desc1' label="%" fullWidth disabled={isLoading} />
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
+                                                <VNumericFormat name='desc1' label="%" fullWidth disabled={isLoading}
+                                                    thousandsGroupStyle={"thousand"} thousandSeparator={"."}
+                                                    decimalScale={2}  decimalSeparator={','}
+                                                    valueIsNumericString={true} suffix={'%'}/>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                                <VNumericFormat name='desc2' label="%" fullWidth disabled={isLoading} />
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
+                                                <VNumericFormat name='desc2' label="%" fullWidth disabled={isLoading}
+                                                    thousandsGroupStyle={"thousand"} thousandSeparator={"."}
+                                                    decimalScale={2}  decimalSeparator={','}
+                                                    valueIsNumericString={true} suffix={'%'}/>
                                             </Grid>
             
-                                            <Grid item xs={12} sm={12} md={1.66} lg={2} xl={2}>
-                                                <VNumericFormat name='desc3' label="%" fullWidth disabled={isLoading} />
+                                            <Grid item xs={12} sm={12} md={1.66} lg={1.5} xl={1.5}>
+                                                <VNumericFormat name='desc3' label="%" fullWidth disabled={isLoading} 
+                                                    thousandsGroupStyle={"thousand"} thousandSeparator={"."}
+                                                    decimalScale={2}  decimalSeparator={','}
+                                                    valueIsNumericString={true} suffix={'%'}/>
                                             </Grid>
                                         </Grid>
             
@@ -637,31 +702,42 @@ export const DetalhesDeClientes: React.FC = () => {
                                             <Grid item xs={12} sm={12} md={6} lg={5} xl={3} >
                                                 <Typography marginRight={1}> Retem I.S.S.: </Typography>
                                                 <VRadioButton2 name="retemISS" />
-                                                
                                             </Grid>
                                         </Grid>
             
                                         <Grid container item direction="row" spacing={2} alignItems="center">
                                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                                <VNumericFormat name='cofins' label="% COFINS" fullWidth disabled={isLoading}/>
+                                                <VNumericFormat name='cofins' label="% COFINS" fullWidth disabled={isLoading}
+                                                    thousandsGroupStyle={"thousand"} thousandSeparator={"."}
+                                                    decimalScale={2}  decimalSeparator={','}
+                                                    valueIsNumericString={true} suffix={'%'}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                                <VNumericFormat name='pis' label="% PIS" fullWidth disabled={isLoading}/>
+                                                <VNumericFormat name='pis' label="% PIS" fullWidth disabled={isLoading}
+                                                    thousandsGroupStyle={"thousand"} thousandSeparator={"."}
+                                                    decimalScale={2}  decimalSeparator={','}
+                                                    valueIsNumericString={true} suffix={'%'}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                                <VNumericFormat name='icms' label="% ICMS" fullWidth disabled={isLoading}/>
+                                                <VNumericFormat name='icms' label="% ICMS" fullWidth disabled={isLoading}
+                                                    thousandsGroupStyle={"thousand"} thousandSeparator={"."}
+                                                    decimalScale={2}  decimalSeparator={','}
+                                                    valueIsNumericString={true} suffix={'%'}/>
                                             </Grid>
             
                                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
-                                                <VNumericFormat name='ipi' label="% IPI" fullWidth disabled={isLoading}/>
+                                                <VNumericFormat name='ipi' label="% IPI" fullWidth disabled={isLoading}
+                                                    thousandsGroupStyle={"thousand"} thousandSeparator={"."}
+                                                    decimalScale={2}  decimalSeparator={','}
+                                                    valueIsNumericString={true} suffix={'%'}/>
                                             </Grid>
                                         </Grid>
             
                                         <Grid container item direction="row" spacing={2} alignItems="center">
                                             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                                                <VTextField name='obs' label="Observação:" fullWidth disabled={isLoading} size="small" multiline/>
+                                                <VTextField name='obs' label="Observação:" multiline fullWidth disabled={isLoading} size="small" />
                                             </Grid>
                                         </Grid>
                                     

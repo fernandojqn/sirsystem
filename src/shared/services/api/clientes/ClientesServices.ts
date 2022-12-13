@@ -9,7 +9,8 @@ export interface IListagemClientes {
 
 export interface IDetalhesCliente {
     id: number; 
-    sufixo: string; nome: string; documento: string; inscricao: string; ccm: string;
+    sufixo: string; nome: string; 
+    tipoEmpresa: string; documento: string; inscricao: string; ccm: string;
     contato: string; tel: string; cel: string; email: string; site: string;
 
     end: string; num: string; compl: string; bairro: string; cidade: string;

@@ -187,13 +187,13 @@ export const DetalhesDeUsuarios: React.FC = () => {
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='tel' label="Telefone" format="(##) #### ####"  
-                                                fullWidth placeholder="(11) 1111-1111" disabled={isLoading}/> 
+                                <VPatternFormat name='tel' label="telefone" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='cel' label="Celular" format="(##) # #### ####"  
-                                                fullWidth placeholder="(11) 91111-1111" disabled={isLoading}/>
+                                <VPatternFormat name="cel" label="Celular" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
                         </Grid>
             

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components"
-import { IVFormErrors, useVForm, VForm, VPatternFormat, VTextField } from "../../shared/forms";
+import { IVFormErrors, useVForm, VForm, VNumericFormat, VPatternFormat, VTextField } from "../../shared/forms";
 import { LayoutBase } from "../../shared/layouts"
 import * as yup from 'yup';
 import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
@@ -214,11 +214,11 @@ export const DetalhesDeTransportadoras: React.FC = () => {
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='inscricao' label="Inscrição Estadual / R.G." placeholder="só digite os numeros" fullWidth disabled={isLoading} size="small"/>
+                                <VNumericFormat name='inscricao' label="Inscrição Estadual / R.G." fullWidth disabled={isLoading}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                                <VTextField name='ccm' label="C.C.M." fullWidth placeholder="só digite os numeros" disabled={isLoading} size="small"/>
+                                <VNumericFormat name='ccm' label="C.C.M." fullWidth disabled={isLoading}/>
                             </Grid>
                         </Grid>
             
@@ -235,13 +235,13 @@ export const DetalhesDeTransportadoras: React.FC = () => {
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='tel' label="Telefone" format="(##) #### ####"  
-                                                fullWidth placeholder="(11) 1111-1111" disabled={isLoading}/> 
+                                <VPatternFormat name='tel' label="telefone" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={3} xl={2}>
-                                <VPatternFormat name='cel' label="Celular" format="(##) # #### ####"  
-                                                fullWidth placeholder="(11) 91111-1111" disabled={isLoading}/>
+                                <VPatternFormat name="cel" label="Celular" format="(##) #####-####" disabled={isLoading}
+                                    valueIsNumericString={true}/>
                             </Grid>
                         </Grid>
             
@@ -269,7 +269,7 @@ export const DetalhesDeTransportadoras: React.FC = () => {
                             </Grid> 
             
                             <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                                <VTextField name='num' label="Numero" fullWidth disabled={isLoading} size="small"/>
+                                <VNumericFormat name='num' label="Numero" fullWidth disabled={isLoading}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={3} lg={2} xl={2}>
@@ -293,8 +293,8 @@ export const DetalhesDeTransportadoras: React.FC = () => {
             
                         <Grid container item direction="row" spacing={2}>
                             <Grid item xs={12} sm={12} md={3} lg={4} xl={3}>
-                                <VPatternFormat name='cep' label="C.E.P."  format="#####-###" 
-                                                fullWidth disabled={isLoading} onBlur={checkCep}/>
+                                <VPatternFormat name='cep' label="C.E.P." format="#####-###" disabled={isLoading}
+                                     valueIsNumericString={true} onBlur={checkCep}/>
                             </Grid>
             
                             <Grid item xs={12} sm={12} md={6} lg={2} xl={2}>

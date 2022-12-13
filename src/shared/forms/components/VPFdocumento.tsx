@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 import { PatternFormatProps, PatternFormat } from 'react-number-format';
 import { useField } from '@unform/core';
+import { Label } from '@mui/icons-material';
+import { getValue } from '@mui/system';
+import _ from 'lodash';
 
 
-type TVTextFieldProps = Omit<PatternFormatProps, 'value'> & Omit<TextFieldProps, 'value'> & {
+type TVTextFieldProps = Omit<PatternFormatProps, 'value' | 'format'> & Omit<TextFieldProps, 'value'> & {
   name: string;
 
   onValueChange?: (value: string) => void;
@@ -15,10 +18,13 @@ type TVTextFieldProps = Omit<PatternFormatProps, 'value'> & Omit<TextFieldProps,
  *
  * Para como customizar a formatação verifique a documentação original do `react-number-format` [nesse link](https://www.npmjs.com/package/react-number-format) ou [nesse link](https://s-yadav.github.io/react-number-format/docs/intro/)
  */
-export const VPatternFormat: React.FC<TVTextFieldProps> = ({ name, onValueChange, ...rest }) => {
+export const VPFdocumento: React.FC<TVTextFieldProps> = ({ name, onValueChange, ...rest }) => {
   const { fieldName, defaultValue, registerField, error } = useField(name);
-  const [value, setValue] = useState<string>(defaultValue);
+  const [value, setValue] = useState<string>(defaultValue || '');
 
+  const [lbl, setLbl] = useState<string>('Documento');
+  const [mask, setMask] = useState<string>('##.###.###/####-##' || "###.###.###-##");
+  const [tamanho, setTamanho] = useState<number>(0);
 
   useEffect(() => {
     registerField({
@@ -32,12 +38,17 @@ export const VPatternFormat: React.FC<TVTextFieldProps> = ({ name, onValueChange
   const handleChange = (value: string) => {
     setValue(value);
     onValueChange && onValueChange(value);
+
+    setTamanho(value.length);
+
   };
 
-
-  return (
+   return (
     <PatternFormat
       {...rest as any}
+
+      label={lbl}
+      format={mask}
       
       size='small'
       customInput={TextField}
@@ -47,4 +58,5 @@ export const VPatternFormat: React.FC<TVTextFieldProps> = ({ name, onValueChange
       onValueChange={({ value }) => handleChange(value)}
     />
   );
+  
 };
